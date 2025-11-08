@@ -29,7 +29,7 @@ const studioSchema = new Schema(
       maxlength: [300, "Website cannot be more than 300 charactes"],
       match: [
         /^(?=.{1,253}$)(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,}$/,
-        "Please enter a valid email address",
+        "Please enter a valid website, e.g., ghibili.jp",
       ],
     },
   },
