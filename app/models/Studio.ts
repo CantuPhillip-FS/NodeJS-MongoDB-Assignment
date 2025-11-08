@@ -25,11 +25,17 @@ const studioSchema = new Schema(
     },
     website: {
       type: String,
-      required: [true, "Studio's website is required. E.g., 'ghibli.jp'"],
+      required: [
+        true,
+        "A website is required, e.g., 'ghibli.jp' OR 'wikipedia.org/wiki/Studio_Ghibli'",
+      ],
       maxlength: [300, "Website cannot be more than 300 charactes"],
-      match: [
-        /^(?=.{1,253}$)(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,}$/,
-        "Please enter a valid website, e.g., ghibili.jp",
+    },
+    isActive: {
+      type: Boolean,
+      required: [
+        true,
+        "isActive true or false is required, whether the Studio is still actively producing animes.",
       ],
     },
   },
