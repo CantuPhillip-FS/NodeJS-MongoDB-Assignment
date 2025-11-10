@@ -38,6 +38,12 @@ const studioSchema = new Schema(
         "isActive true or false is required, whether the Studio is still actively producing animes.",
       ],
     },
+    animes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Anime",
+      },
+    ],
   },
   { timestamps: true }
 );
