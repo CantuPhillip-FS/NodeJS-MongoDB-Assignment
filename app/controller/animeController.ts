@@ -16,7 +16,7 @@ export const createAnime = async (req: Request, res: Response) => {
       });
     } else {
       const newAnime = await Anime.create(data);
-      res.status(200).json({
+      res.status(201).json({
         message: `From the Anime API route with ${req.method}`,
         success: true,
         anime: newAnime,
@@ -144,7 +144,7 @@ export const deleteAnime = async (req: Request, res: Response) => {
       await Anime.deleteOne({ _id: id }).exec();
       return res.status(200).json({
         message: `Anime has been deleted`,
-        success: false,
+        success: true,
       });
     }
   } catch (error: any) {

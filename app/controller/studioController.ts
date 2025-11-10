@@ -16,7 +16,7 @@ export const createStudio = async (req: Request, res: Response) => {
       });
     } else {
       const newStudio = await Studio.create(data);
-      res.status(200).json({
+      res.status(201).json({
         message: `From the Studio API route with ${req.method}`,
         success: true,
         studio: newStudio,
@@ -106,7 +106,7 @@ export const updateStudio = async (req: Request, res: Response) => {
     if (data === undefined) {
       res.status(400).json({
         message:
-          "Please send your request again with a name, year_founded, headquarters, and website.",
+          "Please send your request again with a name, year_founded, headquarters, website, and isActive.",
         success: false,
       });
     } else {
@@ -147,7 +147,7 @@ export const deleteStudio = async (req: Request, res: Response) => {
       await Studio.deleteOne({ _id: id }).exec();
       return res.status(200).json({
         message: `Studio has been deleted`,
-        success: false,
+        success: true,
       });
     }
   } catch (error: any) {

@@ -1,0 +1,819 @@
+{
+	"info": {
+		"_postman_id": "ac8d483e-10cf-41a7-8dbc-29f0657e1016",
+		"name": "Anime Studios",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49591557",
+		"_collection_link": "https://pvcantu-8865771.postman.co/workspace/Phillip-Cantu's-Workspace~de676951-acda-4c54-8943-ef1eb1f62223/collection/49591557-ac8d483e-10cf-41a7-8dbc-29f0657e1016?action=share&source=collection_link&creator=49591557"
+	},
+	"item": [
+		{
+			"name": "Studios",
+			"item": [
+				{
+					"name": "Get All Studios",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is [OK]\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test('All studios have required properties', () => {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.studios).to.be.an('array');",
+									"    jsonData.studios.forEach((studio) => {",
+									"        pm.expect(studio).to.have.property('name');",
+									"        pm.expect(studio).to.have.property('year_founded');",
+									"        pm.expect(studio).to.have.property('headquarters');",
+									"        pm.expect(studio).to.have.property('website');",
+									"    });",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test('Reponse has a message and a success property.', () => {",
+									"    const responseBody = pm.response.json();",
+									"        pm.expect(responseBody).to.have.property('message');",
+									"        pm.expect(responseBody).to.have.property('success');",
+									"});",
+									"",
+									"pm.test(\"The response properties has correct values.\", () => {",
+									"    const responseBody = pm.response.json();",
+									"    pm.expect(responseBody.success).to.be.a(\"boolean\");",
+									"    pm.expect(responseBody.success).to.eql(true);",
+									"    pm.expect(responseBody.message).to.be.a(\"string\");",
+									"    pm.expect(responseBody.message).to.eql(\"GET - request to studio endpoint\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5001/api/v1/studio",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"v1",
+								"studio"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a Studio by Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 [OK]\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is [OK]\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test('Studio has required properties', () => {",
+									"    const responseBody = pm.response.json();",
+									"    pm.expect(responseBody.studio).to.have.property('name');",
+									"    pm.expect(responseBody.studio).to.have.property('year_founded');",
+									"    pm.expect(responseBody.studio).to.have.property('headquarters');",
+									"    pm.expect(responseBody.studio).to.have.property('website');",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test('Reponse has a message and a success property.', () => {",
+									"    const responseBody = pm.response.json();",
+									"        pm.expect(responseBody).to.have.property('message');",
+									"        pm.expect(responseBody).to.have.property('success');",
+									"});",
+									"",
+									"pm.test(\"The response properties has correct values.\", () => {",
+									"    const responseBody = pm.response.json();",
+									"    pm.expect(responseBody.success).to.be.a(\"boolean\");",
+									"    pm.expect(responseBody.success).to.eql(true);",
+									"    pm.expect(responseBody.message).to.be.a(\"string\");",
+									"    pm.expect(responseBody.message).to.eql(\"GET - request to Studio endpoint\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5001/api/v1/studio/{{studioId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"v1",
+								"studio",
+								"{{studioId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a Studio",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Response has created resource ID\", function () {",
+									"  const responseBody = pm.response.json();",
+									"  pm.expect(responseBody.studio).to.have.property(\"_id\").that.is.not.null;",
+									"  pm.expect(responseBody.studio._id).to.have.lengthOf(24);",
+									"  pm.collectionVariables.set(\"studioId\", responseBody.studio._id);",
+									"});",
+									"",
+									"pm.test('Studios has required properties', () => {",
+									"    const responseBody = pm.response.json();",
+									"        pm.expect(responseBody.studio).to.have.property('name');",
+									"        pm.expect(responseBody.studio).to.have.property('year_founded');",
+									"        pm.expect(responseBody.studio).to.have.property('headquarters');",
+									"        pm.expect(responseBody.studio).to.have.property('website');",
+									"        pm.expect(responseBody.studio).to.have.property('isActive');",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test('Reponse has a message and a success property.', () => {",
+									"    const responseBody = pm.response.json();",
+									"        pm.expect(responseBody).to.have.property('message');",
+									"        pm.expect(responseBody).to.have.property('success');",
+									"});",
+									"",
+									"pm.test(\"The response properties has correct values.\", () => {",
+									"    const responseBody = pm.response.json();",
+									"    pm.expect(responseBody.message).to.be.a(\"string\");",
+									"    pm.expect(responseBody.message).to.eql(\"From the Studio API route with POST\");",
+									"    pm.expect(responseBody.success).to.be.a(\"boolean\");",
+									"    pm.expect(responseBody.success).to.eql(true);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Your Old Sis\",\n    \"year_founded\": 1985,\n    \"headquarters\": \"Kajinocho, Koganei, Tokyo, Japan\",\n    \"website\": \"ghibli.jp\",\n    \"isActive\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5001/api/v1/studio",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"v1",
+								"studio"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a Studio by Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 [OK]\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has created resource ID\", function () {",
+									"  const responseBody = pm.response.json();",
+									"  pm.expect(responseBody.studio).to.have.property(\"_id\").that.is.not.null;",
+									"  pm.expect(responseBody.studio._id).to.have.lengthOf(24);",
+									"  pm.collectionVariables.set(\"studioId\", responseBody.studio._id);",
+									"});",
+									"",
+									"pm.test('All studios have required properties', () => {",
+									"    const responseBody = pm.response.json();",
+									"        pm.expect(responseBody.studio).to.have.property('name');",
+									"        pm.expect(responseBody.studio).to.have.property('year_founded');",
+									"        pm.expect(responseBody.studio).to.have.property('headquarters');",
+									"        pm.expect(responseBody.studio).to.have.property('website');",
+									"        pm.expect(responseBody.studio).to.have.property('isActive');",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test('Reponse has a message and a success property.', () => {",
+									"    const responseBody = pm.response.json();",
+									"        pm.expect(responseBody).to.have.property('message');",
+									"        pm.expect(responseBody).to.have.property('success');",
+									"});",
+									"",
+									"pm.test(\"The response properties has correct values.\", () => {",
+									"    const responseBody = pm.response.json();",
+									"    pm.expect(responseBody.message).to.be.a(\"string\");",
+									"    pm.expect(responseBody.message).to.eql(\"From the Studio API with PUT\");",
+									"    pm.expect(responseBody.success).to.be.a(\"boolean\");",
+									"    pm.expect(responseBody.success).to.eql(true);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Your Old Daddyy\",\n    \"year_founded\": 1985,\n    \"headquarters\": \"Kajinocho, Koganei, Tokyo, Japan\",\n    \"website\": \"ghibli.jp\",\n    \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5001/api/v1/studio/691215631a5c784b6a433db3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"v1",
+								"studio",
+								"691215631a5c784b6a433db3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Studio by Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 [OK]\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Reponse has a message and a success property.', () => {",
+									"    const responseBody = pm.response.json();",
+									"        pm.expect(responseBody).to.have.property('message');",
+									"        pm.expect(responseBody).to.have.property('success');",
+									"});",
+									"",
+									"pm.test(\"The response properties has correct values.\", () => {",
+									"    const responseBody = pm.response.json();",
+									"    pm.expect(responseBody.message).to.be.a(\"string\");",
+									"    pm.expect(responseBody.message).to.eql(\"Studio has been deleted\");",
+									"    pm.expect(responseBody.success).to.be.a(\"boolean\");",
+									"    pm.expect(responseBody.success).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test('Reponse has a message and a success property.', () => {",
+									"    const responseBody = pm.response.json();",
+									"        pm.expect(responseBody).to.have.property('message');",
+									"        pm.expect(responseBody).to.have.property('success');",
+									"});",
+									"",
+									"pm.test(\"The response properties has correct values.\", () => {",
+									"    const responseBody = pm.response.json();",
+									"    pm.expect(responseBody.message).to.be.a(\"string\");",
+									"    pm.expect(responseBody.message).to.eql(\"Studio has been deleted\");",
+									"    pm.expect(responseBody.success).to.be.a(\"boolean\");",
+									"    pm.expect(responseBody.success).to.eql(true);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5001/api/v1/studio/6912157a1a5c784b6a433db7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"v1",
+								"studio",
+								"6912157a1a5c784b6a433db7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Animes",
+			"item": [
+				{
+					"name": "Get All Animes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is [OK]\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test('All animes have required properties', () => {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.animes).to.be.an('array');",
+									"    jsonData.animes.forEach((anime) => {",
+									"        pm.expect(anime).to.have.property('title');",
+									"        pm.expect(anime).to.have.property('year_released');",
+									"        pm.expect(anime).to.have.property('averageRating');",
+									"    });",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test('Reponse has a message and a success property.', () => {",
+									"    const responseBody = pm.response.json();",
+									"        pm.expect(responseBody).to.have.property('message');",
+									"        pm.expect(responseBody).to.have.property('success');",
+									"});",
+									"",
+									"pm.test(\"The response properties has correct values.\", () => {",
+									"    const responseBody = pm.response.json();",
+									"    pm.expect(responseBody.success).to.be.a(\"boolean\");",
+									"    pm.expect(responseBody.success).to.eql(true);",
+									"    pm.expect(responseBody.message).to.be.a(\"string\");",
+									"    pm.expect(responseBody.message).to.eql(\"GET - request to anime endpoint\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5001/api/v1/anime",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"v1",
+								"anime"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get an Anime by Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is [OK]\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test('Anime has required properties', () => {",
+									"    const responseBody = pm.response.json();",
+									"    pm.expect(responseBody.anime).to.have.property('title');",
+									"    pm.expect(responseBody.anime).to.have.property('year_released');",
+									"    pm.expect(responseBody.anime).to.have.property('averageRating');",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test('Reponse has a message and a success property.', () => {",
+									"    const responseBody = pm.response.json();",
+									"        pm.expect(responseBody).to.have.property('message');",
+									"        pm.expect(responseBody).to.have.property('success');",
+									"});",
+									"",
+									"pm.test(\"The response properties has correct values.\", () => {",
+									"    const responseBody = pm.response.json();",
+									"    pm.expect(responseBody.success).to.be.a(\"boolean\");",
+									"    pm.expect(responseBody.success).to.eql(true);",
+									"    pm.expect(responseBody.message).to.be.a(\"string\");",
+									"    pm.expect(responseBody.message).to.eql(\"GET - request to Anime endpoint\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5001/api/v1/anime/{{animeId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"v1",
+								"anime",
+								"{{animeId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create an Anime",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201 [Created]\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Response has created resource ID\", function () {",
+									"  const responseBody = pm.response.json();",
+									"  pm.expect(responseBody.anime).to.have.property(\"_id\").that.is.not.null;",
+									"  pm.expect(responseBody.anime._id).to.have.lengthOf(24);",
+									"  pm.collectionVariables.set(\"animeId\", responseBody.anime._id);",
+									"});",
+									"",
+									"pm.test('Anime has required properties', () => {",
+									"    const responseBody = pm.response.json();",
+									"        pm.expect(responseBody.anime).to.have.property('title');",
+									"        pm.expect(responseBody.anime).to.have.property('year_released');",
+									"        pm.expect(responseBody.anime).to.have.property('averageRating');",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test('Reponse has a message and a success property.', () => {",
+									"    const responseBody = pm.response.json();",
+									"        pm.expect(responseBody).to.have.property('message');",
+									"        pm.expect(responseBody).to.have.property('success');",
+									"});",
+									"",
+									"pm.test(\"The response properties has correct values.\", () => {",
+									"    const responseBody = pm.response.json();",
+									"    pm.expect(responseBody.message).to.be.a(\"string\");",
+									"    pm.expect(responseBody.message).to.eql(\"From the Anime API route with POST\");",
+									"    pm.expect(responseBody.success).to.be.a(\"boolean\");",
+									"    pm.expect(responseBody.success).to.eql(true);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\":\"Sprited\",\n    \"year_released\": 2001,\n    \"averageRating\": 10,\n    \"studio\": \"690f82d09cc9bf19fbcd9b4f\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5001/api/v1/anime",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"v1",
+								"anime"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update an Anime by Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 [OK]\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has created resource ID\", function () {",
+									"  const responseBody = pm.response.json();",
+									"  pm.expect(responseBody.anime).to.have.property(\"_id\").that.is.not.null;",
+									"  pm.expect(responseBody.anime._id).to.have.lengthOf(24);",
+									"  pm.collectionVariables.set(\"animeId\", responseBody.anime._id);",
+									"});",
+									"",
+									"pm.test('All studios have required properties', () => {",
+									"    const responseBody = pm.response.json();",
+									"        pm.expect(responseBody.anime).to.have.property('title');",
+									"        pm.expect(responseBody.anime).to.have.property('year_released');",
+									"        pm.expect(responseBody.anime).to.have.property('averageRating');",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test('Reponse has a message and a success property.', () => {",
+									"    const responseBody = pm.response.json();",
+									"        pm.expect(responseBody).to.have.property('message');",
+									"        pm.expect(responseBody).to.have.property('success');",
+									"});",
+									"",
+									"pm.test(\"The response properties has correct values.\", () => {",
+									"    const responseBody = pm.response.json();",
+									"    pm.expect(responseBody.message).to.be.a(\"string\");",
+									"    pm.expect(responseBody.message).to.eql(\"From the Anime API with PUT\");",
+									"    pm.expect(responseBody.success).to.be.a(\"boolean\");",
+									"    pm.expect(responseBody.success).to.eql(true);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\":\"Howl's Moving Castle1\",\n    \"year_released\": 2004,\n    \"averageRating\": 7,\n    \"studio\": \"690f82d09cc9bf19fbcd9b4f\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5001/api/v1/anime/69115a81fc20bf7016a25b82",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"v1",
+								"anime",
+								"69115a81fc20bf7016a25b82"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete an Anime by Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 [OK]\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Reponse has a message and a success property.', () => {",
+									"    const responseBody = pm.response.json();",
+									"        pm.expect(responseBody).to.have.property('message');",
+									"        pm.expect(responseBody).to.have.property('success');",
+									"});",
+									"",
+									"pm.test(\"The response properties has correct values.\", () => {",
+									"    const responseBody = pm.response.json();",
+									"    pm.expect(responseBody.message).to.be.a(\"string\");",
+									"    pm.expect(responseBody.message).to.eql(\"Anime has been deleted\");",
+									"    pm.expect(responseBody.success).to.be.a(\"boolean\");",
+									"    pm.expect(responseBody.success).to.eql(true);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test('Reponse has a message and a success property.', () => {",
+									"    const responseBody = pm.response.json();",
+									"        pm.expect(responseBody).to.have.property('message');",
+									"        pm.expect(responseBody).to.have.property('success');",
+									"});",
+									"",
+									"pm.test(\"The response properties has correct values.\", () => {",
+									"    const responseBody = pm.response.json();",
+									"    pm.expect(responseBody.message).to.be.a(\"string\");",
+									"    pm.expect(responseBody.message).to.eql(\"Anime has been deleted\");",
+									"    pm.expect(responseBody.success).to.be.a(\"boolean\");",
+									"    pm.expect(responseBody.success).to.eql(true);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5001/api/v1/anime/691217701a5c784b6a433dd4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"v1",
+								"anime",
+								"691217701a5c784b6a433dd4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Test localhost:5001",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5001",
+					"host": [
+						"localhost"
+					],
+					"port": "5001"
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test /api/v1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5001/api/v1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"v1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "studioId",
+			"value": ""
+		},
+		{
+			"key": "animeId",
+			"value": ""
+		}
+	]
+}
