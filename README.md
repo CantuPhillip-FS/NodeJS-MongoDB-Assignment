@@ -100,7 +100,57 @@ npm run dev
 
 Server runs at: [http://localhost:5001](http://localhost:5001)
 
-## 🧪 Testing
+## 🧪 API Testing with Postman
 
-All routes were tested successfully with **Postman** and verified in **MongoDB Compass**.  
-The API returns proper JSON responses and error messages for invalid IDs or missing fields.
+This project includes a full **Postman Collection** for testing all API endpoints related to **Anime** and **Studio** CRUD operations.
+
+### 📦 Included File
+
+- `APIs/Studios-and-Animes.postman_collection.json`
+
+### ⚙️ What It Does
+
+This Postman collection allows you to:
+
+- Test all RESTful endpoints (`GET`, `POST`, `PUT`, `DELETE`)
+- Validate request and response structures
+- Run automated **Postman Tests** for verifying:
+  - HTTP status codes (200, 201, 400, 404, etc.)
+  - Response structure and field types using **Ajv JSON Schema validation**
+  - Proper success or error messages
+- Quickly confirm MongoDB persistence for new, updated, and deleted documents
+
+### 🚀 How to Use It
+
+1. **Import the Collection**
+   - Open Postman.
+   - Click **Import** → **Files** → select `Studios-and-Animes.postman_collection.json`.
+2. **Run Your Server**
+
+   ```bash
+   npm run dev
+   ```
+
+   Make sure it’s running on <http://localhost:5001>.
+
+3. **Test Endpoints**
+
+- Expand the **Anime Studios** collection.
+- You'll see folders for **Studios** and **Animes**, each containing:
+  - GET All
+  - GET by Id
+  - POST (Create)
+  - PUT (Update)
+  - DELETE (Remove)
+    Click any request -> hit **Send** to test.
+
+4. **View Test Results**
+
+- Check the **Test REsults** tab after sending each request.
+- Each endpoint includes custom verification assertions.
+
+✅ **Notes**
+
+- Make sure MongoDB is running locally before testing (mongod or via MongoDB Compass).
+- Each API route automatically returns structured JSON responses for easier testing.
+- The exported collection is designed to support manual and automated testing within Postman.
