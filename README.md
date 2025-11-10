@@ -104,6 +104,12 @@ Server runs at: [http://localhost:5001](http://localhost:5001)
 
 This project includes a full **Postman Collection** for testing all API endpoints related to **Anime** and **Studio** CRUD operations.
 
+### 🎬 Video Walkthrough
+
+Here's a very quick runthrough of me running through the endpoints and tests with Postman.
+
+[YouTube Video](https://youtu.be/FAsBPZ_3RqQ)
+
 ### 📦 Included File
 
 - `APIs/Studios-and-Animes.postman_collection.json`
