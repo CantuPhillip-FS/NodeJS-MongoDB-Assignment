@@ -8,7 +8,7 @@ const animeSchema = new Schema(
         true,
         "An anime with this title already exists. Did you mean to update?",
       ],
-      required: [true, "The anime's name is required."],
+      required: [true, "The anime's title is required."],
       trim: true,
       maxlength: [50, "Title cannot be more than 50 characters."],
     },

@@ -1,27 +1,54 @@
 import type { Request, Response } from "express";
 import mongoose from "mongoose";
 import Anime from "../models/Anime.js";
+import Studio from "../models/Studio.js";
 
 /* -------------------------------------------------------------------------- */
 /*                              POST: New Anime                              */
 /* -------------------------------------------------------------------------- */
 export const createAnime = async (req: Request, res: Response) => {
   try {
+    // Check that a request body was sent
     const data = req.body;
-    if (data === undefined) {
+    if (!data) {
       res.status(400).json({
         message:
           "Please send your request again with a title, year_released, averageRating, and studio.",
         success: false,
       });
-    } else {
-      const newAnime = await Anime.create(data);
-      res.status(201).json({
-        message: `From the Anime API route with ${req.method}`,
-        success: true,
-        anime: newAnime,
+    }
+    // Validate the studio id given
+    const id = data.studio;
+    if (!mongoose.Types.ObjectId.isValid(id!)) {
+      return res.status(400).json({
+        message: `Invalid MongoDB ObjectId for studio given: ${id}`,
+        success: false,
       });
     }
+    // First, find the Studio by the Studio's ID given:
+    const studio = await Studio.findById(data.studio);
+    if (!studio) {
+      return res.status(400).json({
+        message:
+          "A studio by the id cannot be found. Please send your request again.",
+        success: false,
+      });
+    }
+    // Next, update the data with the Studio's information:
+    data.studio = studio;
+    // Then, create a new Anime model
+    const animeData = new Anime(data);
+    // Push the studio id to the studio.animes array
+    studio.animes.push(animeData._id);
+    // save the anime and studio data
+    const queries = [animeData.save(), studio.save()];
+    await Promise.all(queries);
+
+    res.status(201).json({
+      message: `From the Anime API route with ${req.method}`,
+      success: true,
+      anime: data,
+    });
   } catch (error: any) {
     res.status(500).json({
       message: error.message,

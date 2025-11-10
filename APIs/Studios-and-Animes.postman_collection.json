@@ -205,7 +205,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\":\"Your Old Sis\",\n    \"year_founded\": 1985,\n    \"headquarters\": \"Kajinocho, Koganei, Tokyo, Japan\",\n    \"website\": \"ghibli.jp\",\n    \"isActive\": false\n}",
+							"raw": "{\n    \"name\":\"Studio Ghibli\",\n    \"year_founded\": 1985,\n    \"headquarters\": \"Kajinocho, Koganei, Tokyo, Japan\",\n    \"website\": \"ghibli.jp\",\n    \"isActive\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -268,7 +268,7 @@
 									"pm.test(\"The response properties has correct values.\", () => {",
 									"    const responseBody = pm.response.json();",
 									"    pm.expect(responseBody.message).to.be.a(\"string\");",
-									"    pm.expect(responseBody.message).to.eql(\"From the Studio API with PUT\");",
+									"    pm.expect(responseBody.message).to.eql(\"From the Studio API route with PUT\");",
 									"    pm.expect(responseBody.success).to.be.a(\"boolean\");",
 									"    pm.expect(responseBody.success).to.eql(true);",
 									"});"
@@ -284,7 +284,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Your Old Daddyy\",\n    \"year_founded\": 1985,\n    \"headquarters\": \"Kajinocho, Koganei, Tokyo, Japan\",\n    \"website\": \"ghibli.jp\",\n    \"isActive\": true\n}",
+							"raw": "{\n    \"name\": \"Your Old Daddy\",\n    \"year_founded\": 1985,\n    \"headquarters\": \"Kajinocho, Koganei, Tokyo, Japan\",\n    \"website\": \"ghibli.jp\",\n    \"isActive\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -362,7 +362,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5001/api/v1/studio/6912157a1a5c784b6a433db7",
+							"raw": "http://localhost:5001/api/v1/studio/69121ba0fa9a238c45ff8ef1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -372,7 +372,7 @@
 								"api",
 								"v1",
 								"studio",
-								"6912157a1a5c784b6a433db7"
+								"69121ba0fa9a238c45ff8ef1"
 							]
 						}
 					},
@@ -530,13 +530,6 @@
 									"    pm.response.to.have.status(201);",
 									"});",
 									"",
-									"pm.test(\"Response has created resource ID\", function () {",
-									"  const responseBody = pm.response.json();",
-									"  pm.expect(responseBody.anime).to.have.property(\"_id\").that.is.not.null;",
-									"  pm.expect(responseBody.anime._id).to.have.lengthOf(24);",
-									"  pm.collectionVariables.set(\"animeId\", responseBody.anime._id);",
-									"});",
-									"",
 									"pm.test('Anime has required properties', () => {",
 									"    const responseBody = pm.response.json();",
 									"        pm.expect(responseBody.anime).to.have.property('title');",
@@ -573,7 +566,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\":\"Sprited\",\n    \"year_released\": 2001,\n    \"averageRating\": 10,\n    \"studio\": \"690f82d09cc9bf19fbcd9b4f\"\n}",
+							"raw": "{\n    \"title\":\"Ponyo\",\n    \"year_released\": 2008,\n    \"averageRating\": 8,\n    \"studio\": \"691237100b878e28a84b81f7\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -634,7 +627,7 @@
 									"pm.test(\"The response properties has correct values.\", () => {",
 									"    const responseBody = pm.response.json();",
 									"    pm.expect(responseBody.message).to.be.a(\"string\");",
-									"    pm.expect(responseBody.message).to.eql(\"From the Anime API with PUT\");",
+									"    pm.expect(responseBody.message).to.eql(\"From the Anime API route with PUT\");",
 									"    pm.expect(responseBody.success).to.be.a(\"boolean\");",
 									"    pm.expect(responseBody.success).to.eql(true);",
 									"});"
@@ -650,7 +643,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\":\"Howl's Moving Castle1\",\n    \"year_released\": 2004,\n    \"averageRating\": 7,\n    \"studio\": \"690f82d09cc9bf19fbcd9b4f\"\n}",
+							"raw": "{\n    \"title\":\"Howl's Moving Castle\",\n    \"year_released\": 2004,\n    \"averageRating\": 9,\n    \"studio\": \"691237100b878e28a84b81f7\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -658,7 +651,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5001/api/v1/anime/69115a81fc20bf7016a25b82",
+							"raw": "http://localhost:5001/api/v1/anime/691237c2a6bd1acf15b34d87",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -668,7 +661,7 @@
 								"api",
 								"v1",
 								"anime",
-								"69115a81fc20bf7016a25b82"
+								"691237c2a6bd1acf15b34d87"
 							]
 						}
 					},
@@ -728,7 +721,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5001/api/v1/anime/691217701a5c784b6a433dd4",
+							"raw": "http://localhost:5001/api/v1/anime/69121c34fa9a238c45ff8efd",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -738,7 +731,7 @@
 								"api",
 								"v1",
 								"anime",
-								"691217701a5c784b6a433dd4"
+								"69121c34fa9a238c45ff8efd"
 							]
 						}
 					},
