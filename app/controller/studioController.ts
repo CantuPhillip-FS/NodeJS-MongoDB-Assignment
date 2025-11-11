@@ -63,7 +63,13 @@ export const getStudioById = async (req: Request, res: Response) => {
         success: false,
       });
     }
-    const foundStudio = await Studio.findById(id);
+    const foundStudio = await Studio.findById(id)
+      .populate({
+        path: "animes",
+        select: "title year_released averageRating -_id",
+      })
+      .select("-createdAt -updatedAt -__v")
+      .exec();
     if (!foundStudio) {
       return res.status(404).json({
         message: `No Studio found with id: ${id}`,
