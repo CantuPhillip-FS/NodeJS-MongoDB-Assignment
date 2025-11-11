@@ -62,7 +62,13 @@ export const createAnime = async (req: Request, res: Response) => {
 /* -------------------------------------------------------------------------- */
 export const getAllAnimes = async (req: Request, res: Response) => {
   try {
-    const Animes = await Anime.find({});
+    const Animes = await Anime.find({})
+      .populate({
+        path: "studio",
+        select: "name year_founded headquarters website -_id",
+      })
+      .select("-createdAt -updatedAt -__v")
+      .exec();
     res.status(200).json({
       animes: Animes,
       success: true,

@@ -37,7 +37,13 @@ export const createStudio = async (req: Request, res: Response) => {
 /* -------------------------------------------------------------------------- */
 export const getAllStudios = async (req: Request, res: Response) => {
   try {
-    const Studios = await Studio.find({});
+    const Studios = await Studio.find({})
+      .populate({
+        path: "animes",
+        select: "title year_released averageRating -_id",
+      })
+      .select("-createdAt -updatedAt -__v")
+      .exec();
     res.status(200).json({
       studios: Studios,
       success: true,
