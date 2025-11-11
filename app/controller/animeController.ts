@@ -27,6 +27,7 @@ export const createAnime = async (req: Request, res: Response) => {
     }
     // First, find the Studio by the Studio's ID given:
     const studio = await Studio.findById(data.studio);
+
     if (!studio) {
       return res.status(400).json({
         message:
@@ -87,13 +88,20 @@ export const getAnimeById = async (req: Request, res: Response) => {
         success: false,
       });
     }
-    const foundAnime = await Anime.findById(id);
+    const foundAnime = await Anime.findById(id)
+      .populate({
+        path: "studio",
+        select: "name year_founded headquarters website -_id",
+      })
+      .select("-createdAt -updatedAt -__v")
+      .exec();
     if (!foundAnime) {
       return res.status(404).json({
         message: `No Anime found with id: ${id}`,
         success: false,
       });
     }
+
     res.status(200).json({
       message: `${req.method} - request to Anime endpoint`,
       success: true,
