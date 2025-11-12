@@ -1,10 +1,8 @@
-import dotenv from "dotenv";
 import type { Request, Response } from "express";
 import express from "express";
 import morgan from "morgan";
 import routeHandler from "./routes/index.js";
 
-dotenv.config();
 const app = express();
 
 app.use(morgan("dev"));
