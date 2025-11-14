@@ -30,6 +30,17 @@ It uses **Node.js**, **Express**, **TypeScript**, and **Mongoose**, and full **C
 | averageRating | Number                   | min: 1, max: 10                       |
 | studio        | ObjectId (ref: "Studio") | optional                              |
 
+#### Sample POST Anime JSON body
+
+```JSON
+{
+  "title": "Jujutsu Kaisen",
+  "year_released": 2020,
+  "averageRating": 9,
+  "studio": "691795a724962aed2661bf0a"
+}
+```
+
 ### 🏢 Studio Model
 
 | Field        | Type    | Validation                            |
@@ -40,7 +51,7 @@ It uses **Node.js**, **Express**, **TypeScript**, and **Mongoose**, and full **C
 | website      | String  | required, maxLength: 300              |
 | isActive     | Boolean | required                              |
 
-#### Sample POST JSON
+#### Sample POST Studio JSON body
 
 ```JSON
   {
