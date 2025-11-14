@@ -12,13 +12,13 @@ export const createStudio = async (req: Request, res: Response) => {
       res.status(400).json({
         message:
           "Please send your request again with a name, year_founded, headquarters, and website.",
-        success: false,
+        status: "failed",
       });
     } else {
       const newStudio = await Studio.create(data);
       res.status(201).json({
         message: `From the Studio API route with ${req.method}`,
-        success: true,
+        status: "successful",
         studio: newStudio,
       });
     }
@@ -36,7 +36,50 @@ export const createStudio = async (req: Request, res: Response) => {
 /*                              GET: All Studios                              */
 /* -------------------------------------------------------------------------- */
 export const getAllStudios = async (req: Request, res: Response) => {
+  // grab user's query
+  const query: any = req.query;
+
   try {
+    // Check if user queried with select
+    if (query.select) {
+      console.log("SELECT found in query");
+      const fieldsIncluded = query.select.split(",").join(" ");
+      try {
+        const studios = await Studio.find().select(fieldsIncluded);
+        return res.status(200).json({
+          message: `${req.method} - Request made`,
+          status: "successful",
+          studios,
+        });
+      } catch (error) {
+        return res.status(500).json({
+          message: `${req.method} - Request made`,
+          status: "failed",
+          error,
+        });
+      }
+    }
+
+    // Check if user passed a sort query
+    if (query.sort) {
+      console.log("SORT found in query");
+      const sortBy = query.sort.split(",").join(" ");
+      try {
+        const studios = await Studio.find().sort(sortBy);
+        return res.status(200).json({
+          message: `${req.method} - Request made`,
+          status: "successful",
+          studios,
+        });
+      } catch (error) {
+        return res.status(500).json({
+          message: `${req.method} - Request made`,
+          status: "failed",
+        });
+      }
+    }
+
+    // GET ALL STUDIO WITHOUT ANY QUERIES OR PARAMETERS:
     const Studios = await Studio.find({})
       .populate({
         path: "animes",
@@ -46,8 +89,8 @@ export const getAllStudios = async (req: Request, res: Response) => {
       .exec();
     res.status(200).json({
       studios: Studios,
-      success: true,
-      message: `${req.method} - request to studio endpoint`,
+      status: "successful",
+      message: `${req.method} - Request made`,
     });
   } catch (error: any) {
     res.status(500).json({
@@ -61,14 +104,37 @@ export const getAllStudios = async (req: Request, res: Response) => {
 /* -------------------------------------------------------------------------- */
 export const getStudioById = async (req: Request, res: Response) => {
   const { id } = req.params;
+  // grab user's query
+  const query: any = req.query;
   try {
     // Validate the ObjectId format BEFORE querying
     if (!mongoose.Types.ObjectId.isValid(id!)) {
       return res.status(400).json({
         message: `Invalid MongoDB ObjectId: ${id}`,
-        success: false,
+        status: "failed",
       });
     }
+
+    // Check if user queried with select
+    if (query.select) {
+      console.log("SELECT found in query");
+      const fieldsIncluded = query.select.split(",").join(" ");
+      try {
+        const studio = await Studio.findById(id).select(fieldsIncluded);
+        return res.status(200).json({
+          message: `${req.method} - Request made`,
+          status: "successful",
+          studio,
+        });
+      } catch (error) {
+        return res.status(500).json({
+          message: `${req.method} - Request made`,
+          status: "failed",
+          error,
+        });
+      }
+    }
+
     const foundStudio = await Studio.findById(id)
       .populate({
         path: "animes",
@@ -79,12 +145,12 @@ export const getStudioById = async (req: Request, res: Response) => {
     if (!foundStudio) {
       return res.status(404).json({
         message: `No Studio found with id: ${id}`,
-        success: false,
+        status: "failed",
       });
     }
     res.status(200).json({
-      message: `${req.method} - request to Studio endpoint`,
-      success: true,
+      message: `${req.method} - Request made`,
+      status: "successful",
       studio: foundStudio,
     });
   } catch (error: any) {
@@ -104,14 +170,14 @@ export const updateStudio = async (req: Request, res: Response) => {
     if (!mongoose.Types.ObjectId.isValid(id!)) {
       return res.status(400).json({
         message: `Invalid MongoDB ObjectId: ${id}`,
-        success: false,
+        status: "failed",
       });
     }
     const foundStudio = await Studio.findById(id);
     if (!foundStudio) {
       return res.status(404).json({
         message: `No Studio found with id: ${id}`,
-        success: false,
+        status: "failed",
       });
     }
     const data = req.body;
@@ -119,13 +185,13 @@ export const updateStudio = async (req: Request, res: Response) => {
       res.status(400).json({
         message:
           "Please send your request again with a name, year_founded, headquarters, website, and isActive.",
-        success: false,
+        status: "failed",
       });
     } else {
       const studio = await Studio.findByIdAndUpdate(id, data, { new: true });
       res.status(200).json({
-        message: `From the Studio API route with ${req.method}`,
-        success: true,
+        message: `${req.method} - Request made`,
+        status: "successful",
         studio,
       });
     }
@@ -146,20 +212,20 @@ export const deleteStudio = async (req: Request, res: Response) => {
     if (!mongoose.Types.ObjectId.isValid(id!)) {
       return res.status(400).json({
         message: `Invalid MongoDB ObjectId: ${id}`,
-        success: false,
+        status: "failed",
       });
     }
     const foundStudio = await Studio.findById(id);
     if (!foundStudio) {
       return res.status(404).json({
         message: `No Studio found with id: ${id}`,
-        success: false,
+        status: "failed",
       });
     } else {
       await Studio.deleteOne({ _id: id }).exec();
       return res.status(200).json({
         message: `Studio has been deleted`,
-        success: true,
+        status: "successful",
       });
     }
   } catch (error: any) {

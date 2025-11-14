@@ -40,6 +40,18 @@ It uses **Node.js**, **Express**, **TypeScript**, and **Mongoose**, and full **C
 | website      | String  | required, maxLength: 300              |
 | isActive     | Boolean | required                              |
 
+#### Sample POST JSON
+
+```JSON
+  {
+    "name": "Bones",
+    "year_founded": 1998,
+    "headquarters": "Suginami, Tokyo, Japan",
+    "website": "bones.co.jp",
+    "isActive": true
+  }
+```
+
 ## ⚙️ API Endpoints
 
 ### Anime Routes
