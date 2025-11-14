@@ -11,7 +11,7 @@
 			"name": "Studios",
 			"item": [
 				{
-					"name": "Get All Studios",
+					"name": "All Studios",
 					"event": [
 						{
 							"listen": "test",
@@ -43,15 +43,15 @@
 									"pm.test('Reponse has a message and a success property.', () => {",
 									"    const responseBody = pm.response.json();",
 									"        pm.expect(responseBody).to.have.property('message');",
-									"        pm.expect(responseBody).to.have.property('success');",
+									"        pm.expect(responseBody).to.have.property('status');",
 									"});",
 									"",
 									"pm.test(\"The response properties has correct values.\", () => {",
 									"    const responseBody = pm.response.json();",
-									"    pm.expect(responseBody.success).to.be.a(\"boolean\");",
-									"    pm.expect(responseBody.success).to.eql(true);",
+									"    pm.expect(responseBody.status).to.be.a(\"string\");",
+									"    pm.expect(responseBody.status).to.eql(\"successful\");",
 									"    pm.expect(responseBody.message).to.be.a(\"string\");",
-									"    pm.expect(responseBody.message).to.eql(\"GET - request to studio endpoint\");",
+									"    pm.expect(responseBody.message).to.eql(\"GET - Request made\");",
 									"});",
 									""
 								],
@@ -81,7 +81,348 @@
 					"response": []
 				},
 				{
-					"name": "Get a Studio by Id",
+					"name": "All Studios SORT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is [OK]\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test('All studios have required properties', () => {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.studios).to.be.an('array');",
+									"    jsonData.studios.forEach((studio) => {",
+									"        pm.expect(studio).to.have.property('name');",
+									"        pm.expect(studio).to.have.property('year_founded');",
+									"        pm.expect(studio).to.have.property('headquarters');",
+									"        pm.expect(studio).to.have.property('website');",
+									"    });",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test('Reponse has a message and a success property.', () => {",
+									"    const responseBody = pm.response.json();",
+									"        pm.expect(responseBody).to.have.property('message');",
+									"        pm.expect(responseBody).to.have.property('status');",
+									"});",
+									"",
+									"pm.test(\"The response properties has correct values.\", () => {",
+									"    const responseBody = pm.response.json();",
+									"    pm.expect(responseBody.status).to.be.a(\"string\");",
+									"    pm.expect(responseBody.status).to.eql(\"successful\");",
+									"    pm.expect(responseBody.message).to.be.a(\"string\");",
+									"    pm.expect(responseBody.message).to.eql(\"GET - Request made\");",
+									"});",
+									"",
+									"// This test statifies the Module 3.6 Unit Testing",
+									"// Since the return must be sorted",
+									"pm.test(\"Studios are sorted by year_founded in ascending order\", () => {",
+									"    const jsonData = pm.response.json();",
+									"    const studios = jsonData.studios;",
+									"",
+									"    // Extract all years into an array",
+									"    const years = studios.map(studio => studio.year_founded);",
+									"",
+									"    // Make a sorted copy of the years array",
+									"    const sortedYears = [...years].sort((a, b) => a - b);",
+									"",
+									"    // Compare original to sorted",
+									"    pm.expect(years).to.eql(sortedYears);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5001/api/v1/studio?sort=year_founded",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"v1",
+								"studio"
+							],
+							"query": [
+								{
+									"key": "sort",
+									"value": "year_founded"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All Studios SELECT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is [OK]\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"// This already existing test statifies the Module 3.6 Unit Testing",
+									"// Since if any of the studios have additional properties or",
+									"// have less then it'll fail",
+									"pm.test('All studios have only name and year_founded', () => {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.studios).to.be.an('array');",
+									"    jsonData.studios.forEach((studio) => {",
+									"        pm.expect(studio).to.have.property('name');",
+									"        pm.expect(studio).to.have.property('year_founded');",
+									"    });",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test('Reponse has a message and a success property.', () => {",
+									"    const responseBody = pm.response.json();",
+									"        pm.expect(responseBody).to.have.property('message');",
+									"        pm.expect(responseBody).to.have.property('status');",
+									"});",
+									"",
+									"pm.test(\"The response properties has correct values.\", () => {",
+									"    const responseBody = pm.response.json();",
+									"    pm.expect(responseBody.status).to.be.a(\"string\");",
+									"    pm.expect(responseBody.status).to.eql(\"successful\");",
+									"    pm.expect(responseBody.message).to.be.a(\"string\");",
+									"    pm.expect(responseBody.message).to.eql(\"GET - Request made\");",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5001/api/v1/studio?select=name,year_founded",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"v1",
+								"studio"
+							],
+							"query": [
+								{
+									"key": "select",
+									"value": "name,year_founded"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All Studios LIMIT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is [OK]\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test('All studios have required properties', () => {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.studios).to.be.an('array');",
+									"    jsonData.studios.forEach((studio) => {",
+									"        pm.expect(studio).to.have.property('name');",
+									"        pm.expect(studio).to.have.property('year_founded');",
+									"        pm.expect(studio).to.have.property('headquarters');",
+									"        pm.expect(studio).to.have.property('website');",
+									"    });",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test('Reponse has a message and a success property.', () => {",
+									"    const responseBody = pm.response.json();",
+									"        pm.expect(responseBody).to.have.property('message');",
+									"        pm.expect(responseBody).to.have.property('status');",
+									"});",
+									"",
+									"pm.test(\"The response properties has correct values.\", () => {",
+									"    const responseBody = pm.response.json();",
+									"    pm.expect(responseBody.status).to.be.a(\"string\");",
+									"    pm.expect(responseBody.status).to.eql(\"successful\");",
+									"    pm.expect(responseBody.message).to.be.a(\"string\");",
+									"    pm.expect(responseBody.message).to.eql(\"GET - Request made\");",
+									"});",
+									"",
+									"// This test statifies the Module 3.6 Unit Testing",
+									"// Since it tests that the return is exactly equal to 2",
+									"pm.test('There are only two studios returned', () => {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.studios).to.be.an('array');",
+									"    pm.expect(jsonData.studios.length).to.equal(2);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5001/api/v1/studio?limit=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"v1",
+								"studio"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All Studios PAGE & LIMIT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is [OK]\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"pm.test('All studios have required properties', () => {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.studios).to.be.an('array');",
+									"    jsonData.studios.forEach((studio) => {",
+									"        pm.expect(studio).to.have.property('name');",
+									"        pm.expect(studio).to.have.property('year_founded');",
+									"        pm.expect(studio).to.have.property('headquarters');",
+									"        pm.expect(studio).to.have.property('website');",
+									"    });",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test('Reponse has a message and a success property.', () => {",
+									"    const responseBody = pm.response.json();",
+									"        pm.expect(responseBody).to.have.property('message');",
+									"        pm.expect(responseBody).to.have.property('status');",
+									"});",
+									"",
+									"pm.test(\"The response properties has correct values.\", () => {",
+									"    const responseBody = pm.response.json();",
+									"    pm.expect(responseBody.status).to.be.a(\"string\");",
+									"    pm.expect(responseBody.status).to.eql(\"successful\");",
+									"    pm.expect(responseBody.message).to.be.a(\"string\");",
+									"    pm.expect(responseBody.message).to.eql(\"GET - Request made\");",
+									"});",
+									"",
+									"// This test statifies the Module 3.6 Unit Testing",
+									"// Since it tests that the return is exactly equal to 3",
+									"pm.test('There are only two studios returned', () => {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.studios).to.be.an('array');",
+									"    pm.expect(jsonData.studios.length).to.equal(3);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5001/api/v1/studio?page=2&limit=3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"v1",
+								"studio"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								},
+								{
+									"key": "limit",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Studio by Id",
 					"event": [
 						{
 							"listen": "test",
@@ -144,6 +485,80 @@
 								"v1",
 								"studio",
 								"{{studioId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Studio by Id SELECT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 [OK]\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is [OK]\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"// This already existing test statifies the Module 3.6 Unit Testing",
+									"// Since if any of the studios have additional properties or",
+									"// have less then it'll fail",
+									"pm.test('Studio has required properties', () => {",
+									"    const responseBody = pm.response.json();",
+									"    pm.expect(responseBody.studio).to.have.property('name');",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test('Reponse has a message and a success property.', () => {",
+									"    const responseBody = pm.response.json();",
+									"        pm.expect(responseBody).to.have.property('message');",
+									"        pm.expect(responseBody).to.have.property('status');",
+									"});",
+									"",
+									"pm.test(\"The response properties has correct values.\", () => {",
+									"    const responseBody = pm.response.json();",
+									"    pm.expect(responseBody.status).to.be.a(\"string\");",
+									"    pm.expect(responseBody.status).to.eql(\"successful\");",
+									"    pm.expect(responseBody.message).to.be.a(\"string\");",
+									"    pm.expect(responseBody.message).to.eql(\"GET - Request made\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5001/api/v1/studio/{{studioId}}?select=name",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"v1",
+								"studio",
+								"{{studioId}}"
+							],
+							"query": [
+								{
+									"key": "select",
+									"value": "name"
+								}
 							]
 						}
 					},
@@ -384,7 +799,7 @@
 			"name": "Animes",
 			"item": [
 				{
-					"name": "Get All Animes",
+					"name": "All Animes",
 					"event": [
 						{
 							"listen": "test",
@@ -452,7 +867,7 @@
 					"response": []
 				},
 				{
-					"name": "Get an Anime by Id",
+					"name": "Anime by Id",
 					"event": [
 						{
 							"listen": "test",
@@ -520,6 +935,81 @@
 					"response": []
 				},
 				{
+					"name": "Anime by Id SELECT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status code is [OK]\", function () {",
+									"    pm.response.to.be.ok;",
+									"});",
+									"",
+									"// This already existing test statifies the Module 3.6 Unit Testing",
+									"// Since if any of the animes have additional properties or",
+									"// have less then it'll fail",
+									"pm.test('Anime has required properties', () => {",
+									"    const responseBody = pm.response.json();",
+									"    pm.expect(responseBody.anime).to.have.property('title');",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test('Reponse has a message and a success property.', () => {",
+									"    const responseBody = pm.response.json();",
+									"        pm.expect(responseBody).to.have.property('message');",
+									"        pm.expect(responseBody).to.have.property('status');",
+									"});",
+									"",
+									"pm.test(\"The response properties has correct values.\", () => {",
+									"    const responseBody = pm.response.json();",
+									"    pm.expect(responseBody.status).to.be.a(\"string\");",
+									"    pm.expect(responseBody.status).to.eql(\"successful\");",
+									"    pm.expect(responseBody.message).to.be.a(\"string\");",
+									"    pm.expect(responseBody.message).to.eql(\"GET - Request made\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5001/api/v1/anime/{{animeId}}?select=title",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"v1",
+								"anime",
+								"{{animeId}}"
+							],
+							"query": [
+								{
+									"key": "select",
+									"value": "title"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Create an Anime",
 					"event": [
 						{
@@ -566,7 +1056,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\":\"Ponyo\",\n    \"year_released\": 2008,\n    \"averageRating\": 8,\n    \"studio\": \"691237100b878e28a84b81f7\"\n}",
+							"raw": "{\n    \"title\":\"My Neighbor Totoro\",\n    \"year_released\": 1988,\n    \"averageRating\": 7,\n    \"studio\": \"691237100b878e28a84b81f7\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
