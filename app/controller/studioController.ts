@@ -67,7 +67,14 @@ export const getAllStudios = async (req: Request, res: Response) => {
       console.log("SORT found in query");
       const sortBy = query.sort.split(",").join(" ");
       try {
-        const studios = await Studio.find().sort(sortBy);
+        const studios = await Studio.find()
+          .sort(sortBy)
+          .populate({
+            path: "animes",
+            select: "title year_released averageRating -_id",
+          })
+          .select("-createdAt -updatedAt -__v")
+          .exec();
         return res.status(200).json({
           message: `${req.method} - Request made`,
           status: "successful",
@@ -121,7 +128,7 @@ export const getAllStudios = async (req: Request, res: Response) => {
     }
 
     // GET ALL STUDIO WITHOUT ANY QUERIES OR PARAMETERS:
-    const studio = await Studio.find({})
+    const studio = await Studio.find()
       .populate({
         path: "animes",
         select: "title year_released averageRating -_id",

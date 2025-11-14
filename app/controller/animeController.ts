@@ -152,7 +152,7 @@ export const getAllAnimes = async (req: Request, res: Response) => {
     }
 
     // GET ALL ANIME WITHOUT ANY QUERIES OR PARAMETERS:
-    const animes = await Anime.find({})
+    const animes = await Anime.find()
       .populate({
         path: "studio",
         select: "name year_founded headquarters website -_id",
