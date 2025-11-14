@@ -10,7 +10,7 @@ export const createAnime = async (req: Request, res: Response) => {
   try {
     // Check that a request body was sent
     const data = req.body;
-    if (!data) {
+    if (!data || Object.keys(req.body).length === 0) {
       return res.status(400).json({
         message:
           "Please send your request again with a title, year_released, averageRating, and studio.",
@@ -248,6 +248,17 @@ export const updateAnime = async (req: Request, res: Response) => {
         status: "failed",
       });
     }
+
+    // check for request body BEFORE attempting fetch
+    const data = req.body;
+    if (!data || Object.keys(req.body).length === 0) {
+      return res.status(400).json({
+        message:
+          "Please send your request again with a title, year_released, averageRating, and studio.",
+        status: "failed",
+      });
+    }
+
     const foundAnime = await Anime.findById(id);
     if (!foundAnime) {
       return res.status(404).json({
@@ -255,21 +266,12 @@ export const updateAnime = async (req: Request, res: Response) => {
         status: "failed",
       });
     }
-    const data = req.body;
-    if (data === undefined) {
-      return res.status(400).json({
-        message:
-          "Please send your request again with a title, year_released, averageRating, and studio.",
-        status: "failed",
-      });
-    } else {
-      const anime = await Anime.findByIdAndUpdate(id, data, { new: true });
-      return res.status(200).json({
-        message: `${req.method} - Request made`,
-        status: "successful",
-        anime,
-      });
-    }
+    const anime = await Anime.findByIdAndUpdate(id, data, { new: true });
+    return res.status(200).json({
+      message: `${req.method} - Request made`,
+      status: "successful",
+      anime,
+    });
   } catch (error: any) {
     return res.status(500).json({
       message: error.message,

@@ -9,7 +9,7 @@ export const createStudio = async (req: Request, res: Response) => {
   try {
     // Check that a request body was sent
     const data = req.body;
-    if (data === undefined) {
+    if (!data || Object.keys(req.body).length === 0) {
       return res.status(400).json({
         message:
           "Please send your request again with a name, year_founded, headquarters, and website.",
@@ -222,6 +222,17 @@ export const updateStudio = async (req: Request, res: Response) => {
         status: "failed",
       });
     }
+
+    // Check for request body BEFORE fetch
+    const data = req.body;
+    if (!data || Object.keys(req.body).length === 0) {
+      return res.status(400).json({
+        message:
+          "Please send your request again with a name, year_founded, headquarters, website, and isActive.",
+        status: "failed",
+      });
+    }
+
     const foundStudio = await Studio.findById(id);
     if (!foundStudio) {
       return res.status(404).json({
@@ -229,21 +240,12 @@ export const updateStudio = async (req: Request, res: Response) => {
         status: "failed",
       });
     }
-    const data = req.body;
-    if (data === undefined) {
-      return res.status(400).json({
-        message:
-          "Please send your request again with a name, year_founded, headquarters, website, and isActive.",
-        status: "failed",
-      });
-    } else {
-      const studio = await Studio.findByIdAndUpdate(id, data, { new: true });
-      return res.status(200).json({
-        message: `${req.method} - Request made`,
-        status: "successful",
-        studio,
-      });
-    }
+    const studio = await Studio.findByIdAndUpdate(id, data, { new: true });
+    return res.status(200).json({
+      message: `${req.method} - Request made`,
+      status: "successful",
+      studio,
+    });
   } catch (error: any) {
     return res.status(500).json({
       message: error.message,
