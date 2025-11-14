@@ -1,17 +1,18 @@
 /** @type {import('jest').Config} */
 module.exports = {
-  preset: "ts-jest/presets/default-esm",
+  preset: "ts-jest",
   testEnvironment: "node",
 
-  // Important so Jest treats TS files as ESM
-  extensionsToTreatAsEsm: [".ts"],
-
+  // Tell Jest to use ts-jest and pass it your test tsconfig
   transform: {
-    "^.+\\.tsx?$": [
-      "ts-jest",
-      { useESM: true, tsconfig: "tsconfig.test.json" },
-    ],
+    "^.+\\.tsx?$": ["ts-jest", { tsconfig: "tsconfig.test.json" }],
   },
 
-  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json"],
+  // This is the key bit: map relative ".../something.js" → ".../something"
+  // so Jest can find your .ts files.
+  moduleNameMapper: {
+    "^(\\.{1,2}/.*)\\.js$": "$1",
+  },
+
+  testMatch: ["**/*.test.ts", "**/*.spec.ts"],
 };
