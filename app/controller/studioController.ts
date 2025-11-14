@@ -7,6 +7,7 @@ import Studio from "../models/Studio.js";
 /* -------------------------------------------------------------------------- */
 export const createStudio = async (req: Request, res: Response) => {
   try {
+    // Check that a request body was sent
     const data = req.body;
     if (data === undefined) {
       res.status(400).json({
@@ -17,7 +18,7 @@ export const createStudio = async (req: Request, res: Response) => {
     } else {
       const newStudio = await Studio.create(data);
       res.status(201).json({
-        message: `From the Studio API route with ${req.method}`,
+        message: `${req.method} - Request made`,
         status: "successful",
         studio: newStudio,
       });
