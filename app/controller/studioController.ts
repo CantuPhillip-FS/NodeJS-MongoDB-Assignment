@@ -10,14 +10,14 @@ export const createStudio = async (req: Request, res: Response) => {
     // Check that a request body was sent
     const data = req.body;
     if (data === undefined) {
-      res.status(400).json({
+      return res.status(400).json({
         message:
           "Please send your request again with a name, year_founded, headquarters, and website.",
         status: "failed",
       });
     } else {
       const newStudio = await Studio.create(data);
-      res.status(201).json({
+      return res.status(201).json({
         message: `${req.method} - Request made`,
         status: "successful",
         studio: newStudio,
@@ -27,8 +27,9 @@ export const createStudio = async (req: Request, res: Response) => {
     // from what I learned it seems that error can only be uknown or any
     // I chose any because it works for all errors without any if statements
     // but it basically disables type safety, since it's just an error message I'm okay with that
-    res.status(500).json({
+    return res.status(500).json({
       message: error.message,
+      status: "failed",
     });
   }
 };
@@ -80,21 +81,60 @@ export const getAllStudios = async (req: Request, res: Response) => {
       }
     }
 
+    // Check if user passed a page and/or page&limit query
+    if (req.query.page) {
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 2;
+      const skip = (page - 1) * limit;
+      const studios = await Studio.find()
+        .skip(skip)
+        .limit(limit)
+        .populate({
+          path: "animes",
+          select: "title year_released averageRating -_id",
+        })
+        .select("-createdAt -updatedAt -__v")
+        .exec();
+      return res.status(200).json({
+        studios: studios,
+        status: "successful",
+        message: `${req.method} - Request made`,
+      });
+    }
+
+    // Check if user passed just a limit query
+    if (req.query.limit) {
+      const limit = parseInt(req.query.limit as string) || 2;
+      const studios = await Studio.find()
+        .limit(limit)
+        .populate({
+          path: "animes",
+          select: "title year_released averageRating -_id",
+        })
+        .select("-createdAt -updatedAt -__v")
+        .exec();
+      return res.status(200).json({
+        studios: studios,
+        status: "successful",
+        message: `${req.method} - Request made`,
+      });
+    }
+
     // GET ALL STUDIO WITHOUT ANY QUERIES OR PARAMETERS:
-    const Studios = await Studio.find({})
+    const studio = await Studio.find({})
       .populate({
         path: "animes",
         select: "title year_released averageRating -_id",
       })
       .select("-createdAt -updatedAt -__v")
       .exec();
-    res.status(200).json({
-      studios: Studios,
+    return res.status(200).json({
+      studios: studio,
       status: "successful",
       message: `${req.method} - Request made`,
     });
   } catch (error: any) {
-    res.status(500).json({
+    return res.status(500).json({
       message: error.message,
     });
   }
@@ -149,14 +189,15 @@ export const getStudioById = async (req: Request, res: Response) => {
         status: "failed",
       });
     }
-    res.status(200).json({
+    return res.status(200).json({
       message: `${req.method} - Request made`,
       status: "successful",
       studio: foundStudio,
     });
   } catch (error: any) {
-    res.status(500).json({
+    return res.status(500).json({
       message: error.message,
+      status: "failed",
     });
   }
 };
@@ -183,22 +224,23 @@ export const updateStudio = async (req: Request, res: Response) => {
     }
     const data = req.body;
     if (data === undefined) {
-      res.status(400).json({
+      return res.status(400).json({
         message:
           "Please send your request again with a name, year_founded, headquarters, website, and isActive.",
         status: "failed",
       });
     } else {
       const studio = await Studio.findByIdAndUpdate(id, data, { new: true });
-      res.status(200).json({
+      return res.status(200).json({
         message: `${req.method} - Request made`,
         status: "successful",
         studio,
       });
     }
   } catch (error: any) {
-    res.status(500).json({
+    return res.status(500).json({
       message: error.message,
+      status: "failed",
     });
   }
 };
@@ -230,8 +272,9 @@ export const deleteStudio = async (req: Request, res: Response) => {
       });
     }
   } catch (error: any) {
-    res.status(500).json({
+    return res.status(500).json({
       message: error.message,
+      status: "failed",
     });
   }
 };

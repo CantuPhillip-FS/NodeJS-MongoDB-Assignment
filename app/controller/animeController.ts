@@ -11,7 +11,7 @@ export const createAnime = async (req: Request, res: Response) => {
     // Check that a request body was sent
     const data = req.body;
     if (!data) {
-      res.status(400).json({
+      return res.status(400).json({
         message:
           "Please send your request again with a title, year_released, averageRating, and studio.",
         status: "failed",
@@ -45,14 +45,15 @@ export const createAnime = async (req: Request, res: Response) => {
     const queries = [animeData.save(), studio.save()];
     await Promise.all(queries);
 
-    res.status(201).json({
+    return res.status(201).json({
       message: `${req.method} - Request made`,
       status: "successful",
       anime: data,
     });
   } catch (error: any) {
-    res.status(500).json({
+    return res.status(500).json({
       message: error.message,
+      status: "failed",
     });
   }
 };
@@ -90,7 +91,14 @@ export const getAllAnimes = async (req: Request, res: Response) => {
       console.log("SORT found in query");
       const sortBy = query.sort.split(",").join(" ");
       try {
-        const animes = await Anime.find().sort(sortBy);
+        const animes = await Anime.find()
+          .sort(sortBy)
+          .populate({
+            path: "studio",
+            select: "name year_founded headquarters website -_id",
+          })
+          .select("-createdAt -updatedAt -__v")
+          .exec();
         return res.status(200).json({
           message: `${req.method} - Request made`,
           status: "successful",
@@ -104,22 +112,62 @@ export const getAllAnimes = async (req: Request, res: Response) => {
       }
     }
 
+    // Check if user passed a page and/or page&limit query
+    if (req.query.page) {
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 2;
+      const skip = (page - 1) * limit;
+      const animes = await Anime.find()
+        .skip(skip)
+        .limit(limit)
+        .populate({
+          path: "studio",
+          select: "name year_founded headquarters website -_id",
+        })
+        .select("-createdAt -updatedAt -__v")
+        .exec();
+      return res.status(200).json({
+        message: `${req.method} - Request made`,
+        status: "successful",
+        animes,
+      });
+    }
+
+    // Check if user passed just a limit query
+    if (req.query.limit) {
+      const limit = parseInt(req.query.limit as string) || 2;
+      const animes = await Anime.find()
+        .limit(limit)
+        .populate({
+          path: "studio",
+          select: "name year_founded headquarters website -_id",
+        })
+        .select("-createdAt -updatedAt -__v")
+        .exec();
+      return res.status(200).json({
+        message: `${req.method} - Request made`,
+        status: "successful",
+        animes,
+      });
+    }
+
     // GET ALL ANIME WITHOUT ANY QUERIES OR PARAMETERS:
-    const Animes = await Anime.find({})
+    const animes = await Anime.find({})
       .populate({
         path: "studio",
         select: "name year_founded headquarters website -_id",
       })
       .select("-createdAt -updatedAt -__v")
       .exec();
-    res.status(200).json({
+    return res.status(200).json({
       message: `${req.method} - Request made`,
       status: "successful",
-      animes: Animes,
+      animes,
     });
   } catch (error: any) {
-    res.status(500).json({
+    return res.status(500).json({
       message: error.message,
+      status: "failed",
     });
   }
 };
@@ -174,14 +222,15 @@ export const getAnimeById = async (req: Request, res: Response) => {
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       message: `${req.method} - Request made`,
       status: "successful",
       anime: foundAnime,
     });
   } catch (error: any) {
-    res.status(500).json({
+    return res.status(500).json({
       message: error.message,
+      status: "failed",
     });
   }
 };
@@ -208,22 +257,23 @@ export const updateAnime = async (req: Request, res: Response) => {
     }
     const data = req.body;
     if (data === undefined) {
-      res.status(400).json({
+      return res.status(400).json({
         message:
           "Please send your request again with a title, year_released, averageRating, and studio.",
         status: "failed",
       });
     } else {
       const anime = await Anime.findByIdAndUpdate(id, data, { new: true });
-      res.status(200).json({
+      return res.status(200).json({
         message: `${req.method} - Request made`,
         status: "successful",
         anime,
       });
     }
   } catch (error: any) {
-    res.status(500).json({
+    return res.status(500).json({
       message: error.message,
+      status: "failed",
     });
   }
 };
@@ -255,8 +305,9 @@ export const deleteAnime = async (req: Request, res: Response) => {
       });
     }
   } catch (error: any) {
-    res.status(500).json({
+    return res.status(500).json({
       message: error.message,
+      status: "failed",
     });
   }
 };
