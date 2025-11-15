@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 const SignupForm = () => {
   const [firstname, setFirstname] = useState("");
@@ -11,8 +12,10 @@ const SignupForm = () => {
     SetisProccessing(true);
     try {
       console.log("Signup Form Submitted");
+      toast.success("Welcome! 🥳");
     } catch (error) {
       console.log(error);
+      toast.error("Something went wrong❗️");
     } finally {
       SetisProccessing(false);
     }
