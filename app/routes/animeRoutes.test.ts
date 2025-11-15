@@ -102,3 +102,118 @@ async function getData(path: string) {
   expect(res.status).toBe(200); // basic test to be used in tests below
   return res.json();
 }
+
+/* ------------------------------------------------------------------ */
+/* 1) GET /anime?sort=year_released                                   */
+/* ------------------------------------------------------------------ */
+describe("GET /anime?sort=year_released", () => {
+  test("returns animes sorted by year_released with default ascending order", async () => {
+    const data: any = await getData("?sort=year_released");
+    const years = data.animes.map((anime: any) => anime.year_released);
+    // standard javascript spread operator with common way to sort
+    const sortedYears = [...years].sort((a, b) => a - b);
+    expect(years).toEqual(sortedYears);
+  });
+
+  test("returns animes sorted by year_released descending", async () => {
+    // just add a - to make it descending
+    const data: any = await getData("?sort=-year_released");
+    const years = data.animes.map((anime: any) => anime.year_released);
+    const sortedYearsDesc = [...years].sort((a, b) => b - a);
+    expect(years).toEqual(sortedYearsDesc);
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* 2) GET /anime?select=title                                         */
+/* ------------------------------------------------------------------ */
+describe("GET /anime?select=title", () => {
+  test("each anime has only _id and title", async () => {
+    // _id is automatically returned unless explicityly excluded
+    const data: any = await getData("?select=title");
+
+    // run a for each since it's an array of anime objects
+    data.animes.forEach((anime: any) => {
+      expect(anime).toHaveProperty("_id");
+      expect(anime).toHaveProperty("title");
+    });
+  });
+
+  // basically running the opposite test
+  test("anime objects do NOT include year_released, averageRating, or studio", async () => {
+    const data: any = await getData("?select=title");
+
+    data.animes.forEach((anime: any) => {
+      expect(anime.year_released).toBeUndefined();
+      expect(anime.averageRating).toBeUndefined();
+      expect(anime.studio).toBeUndefined();
+    });
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* 3) GET /anime?limit=2                                              */
+/* ------------------------------------------------------------------ */
+describe("GET /anime?limit=2", () => {
+  test("returns exactly 2 animes", async () => {
+    const data: any = await getData("?limit=2");
+    expect(Array.isArray(data.animes)).toBe(true);
+    expect(data.animes.length).toBe(2);
+  });
+
+  test("changing limit changes number of returned animes", async () => {
+    const data2: any = await getData("?limit=3");
+    expect(data2.animes.length).toBe(3);
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* 4) GET /anime?page=2&limit=3                                       */
+/* ------------------------------------------------------------------ */
+describe("GET /anime?page=2&limit=3", () => {
+  test("page 2 with limit=3 returns 3 animes", async () => {
+    const data: any = await getData("?page=2&limit=3");
+    expect(Array.isArray(data.animes)).toBe(true);
+    expect(data.animes.length).toBe(3);
+  });
+
+  // test the skip by comparing two pages
+  test("page 1 and page 2 return different animes (skip works)", async () => {
+    const page1: any = await getData("?page=1&limit=3");
+    const page2: any = await getData("?page=2&limit=3");
+
+    // easier and faster to just extract and compare the ids by mapping the arrays
+    const idsPage1 = page1.animes.map((anime: any) => anime._id);
+    const idsPage2 = page2.animes.map((anime: any) => anime._id);
+
+    idsPage2.forEach((id: string) => {
+      expect(idsPage1).not.toContain(id);
+    });
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* 5) GET /anime/:id?select=title                                     */
+/* ------------------------------------------------------------------ */
+describe("GET /anime/:id?select=title", () => {
+  const animeId = "691237c2a6bd1acf15b34d87"; // Howl's Moving Castle
+
+  test("returns only title (and _id) for given anime id", async () => {
+    const data: any = await getData(`/${animeId}?select=title`);
+
+    expect(data).toHaveProperty("anime");
+    const anime = data.anime;
+
+    expect(anime).toHaveProperty("_id", animeId);
+    expect(anime).toHaveProperty("title", "Howl's Moving Castle");
+  });
+
+  test("does not include other fields like year_released, averageRating, or studio", async () => {
+    const data: any = await getData(`/${animeId}?select=title`);
+    const anime = data.anime;
+
+    expect(anime.year_released).toBeUndefined();
+    expect(anime.averageRating).toBeUndefined();
+    expect(anime.studio).toBeUndefined();
+  });
+});
