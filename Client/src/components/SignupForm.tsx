@@ -7,12 +7,41 @@ const SignupForm = () => {
   const [email, setEmail] = useState("");
   const [isProccessing, SetisProccessing] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  // Use Vite's built in .env processing
+  const baseUrl: string = import.meta.env.VITE_USER_BASE_URL;
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     SetisProccessing(true);
     try {
       console.log("Signup Form Submitted");
-      toast.success("Welcome! 🥳");
+      const data = new FormData(e.currentTarget);
+      console.log("DATA >>>", data);
+      const firstname = data.get("firstname");
+      const lastname = data.get("lastname");
+      const email = data.get("email");
+      console.log("DATA.GET >>>", firstname, lastname, email);
+      const response = await fetch(baseUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstname: firstname,
+          lastname: lastname,
+          email: email,
+        }),
+      });
+      console.log("RESPONSE >>>", response);
+      const body = await response.json();
+      console.log("BODY >>>", body);
+      if (response.ok) {
+        toast.success("Welcome! 🥳");
+        setFirstname("");
+        setLastname("");
+        setEmail("");
+      } else {
+        toast.error(
+          `Signup was not successful: ${body.message || JSON.stringify(body)}`
+        );
+      }
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong❗️");
