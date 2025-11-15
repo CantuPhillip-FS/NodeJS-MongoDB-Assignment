@@ -23,7 +23,6 @@ describe("Anime API", () => {
 
     expect(data).toHaveProperty("status");
     expect(data.status).toBe("successful");
-
     expect(data).toHaveProperty("animes");
     expect(Array.isArray(data.animes)).toBe(true);
   });

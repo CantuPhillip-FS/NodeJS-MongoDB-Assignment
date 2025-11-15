@@ -183,3 +183,37 @@ This Postman collection allows you to:
 - Make sure MongoDB is running locally before testing (mongod or via MongoDB Compass).
 - Each API route automatically returns structured JSON responses for easier testing.
 - The exported collection is designed to support manual and automated testing within Postman.
+
+## 🧪 Jest Route Tests
+
+Added basic Jest route tests hitting the _actual running API_ on localhost.
+
+Structure:
+
+```ts
+import { describe, expect, test } from "@jest/globals";
+
+const BASE_URL = "http://localhost:5001/api/v1/anime";
+
+async function getData(path: string) {
+  const res = await fetch(`${BASE_URL}${path}`);
+  expect(res.status).toBe(200);
+  return res.json();
+}
+
+describe("GET /anime?sort=year_released", () => {
+  test("returns animes sorted ASC", async () => {
+    const data: any = await getData("?sort=year_released");
+    const years = data.animes.map((a: any) => a.year_released);
+    const sorted = [...years].sort((a, b) => a - b);
+    expect(years).toEqual(sorted);
+  });
+});
+```
+
+All Jest tests follow this template:
+
+1. call the API
+2. do 1–2 simple expectations
+
+Note: You do need to have data within your local MongoDB to test.
