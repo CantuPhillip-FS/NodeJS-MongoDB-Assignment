@@ -1,21 +1,22 @@
-import { Router } from "express";
-import {
-  createAnime,
-  deleteAnime,
-  getAllAnimes,
-  getAnimeById,
-  updateAnime,
-} from "../controller/animeController.js";
-const router = Router();
+import { describe, expect, test } from "@jest/globals";
+async function getAllAnimes() {
+  const res = await fetch("http://localhost:5001/api/v1/anime");
+  return res.json();
+}
 
-router.get("/", getAllAnimes);
+describe("Anime API", () => {
+  test("GET /anime returns successful", async () => {
+    const data: any = await getAllAnimes();
 
-router.get("/:id", getAnimeById);
+    expect(data).toHaveProperty("status");
+    expect(data.status).toBe("successful");
 
-router.post("/", createAnime);
+    expect(data).toHaveProperty("animes");
+    expect(Array.isArray(data.animes)).toBe(true);
+  });
 
-router.put("/:id", updateAnime);
-
-router.delete("/:id", deleteAnime);
-
-export default router;
+  test("Anime list should contain at least one anime", async () => {
+    const data: any = await getAllAnimes();
+    expect(data.animes.length).toBeGreaterThan(0);
+  });
+});
