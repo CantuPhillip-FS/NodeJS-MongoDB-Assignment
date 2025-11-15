@@ -41,7 +41,7 @@ export const createUser = async (req: Request, res: Response) => {
 /* -------------------------------------------------------------------------- */
 export const getAllUsers = async (req: Request, res: Response) => {
   try {
-    const users = User.find();
+    const users = await User.find();
     if (!users || Object.keys(users).length === 0) {
       return res.status(400).json({
         message: "No exisiting users. Send a POST request to creat one.",
