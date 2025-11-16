@@ -1,43 +1,41 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 
 const SignupForm = () => {
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [email, setEmail] = useState("");
-  const [isProccessing, SetisProccessing] = useState(false);
+  const firstnameInput = useRef("");
+  const lastnameInput = useRef("");
+  const emailInput = useRef("");
+  const clearInputs = () => {
+    firstnameInput.current.value = "";
+    lastnameInput.current.value = "";
+    emailInput.current.value = "";
+  };
+  const [buttonstate, setButtonstate] = useState(false);
 
   // Use Vite's built in .env processing
   const baseUrl: string = import.meta.env.VITE_USER_BASE_URL;
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    SetisProccessing(true);
+    setButtonstate(true);
     try {
       console.log("Signup Form Submitted");
-      const data = new FormData(e.currentTarget);
-      console.log("DATA >>>", data);
-      const firstname = data.get("firstname");
-      const lastname = data.get("lastname");
-      const email = data.get("email");
-      console.log("DATA.GET >>>", firstname, lastname, email);
+      const firstnameValue = firstnameInput.current.value;
+      const lastnameValue = lastnameInput.current.value;
+      const emailValue = emailInput.current.value;
       const response = await fetch(baseUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          firstname: firstname,
-          lastname: lastname,
-          email: email,
+          firstname: firstnameValue,
+          lastname: lastnameValue,
+          email: emailValue,
         }),
       });
-      console.log("RESPONSE >>>", response);
-      const body = await response.json();
-      console.log("BODY >>>", body);
       if (response.ok) {
         toast.success("Welcome! 🥳");
-        setFirstname("");
-        setLastname("");
-        setEmail("");
+        clearInputs();
       } else {
+        const body = await response.json();
         toast.error(
           `Signup was not successful: ${body.message || JSON.stringify(body)}`
         );
@@ -46,7 +44,7 @@ const SignupForm = () => {
       console.log(error);
       toast.error("Something went wrong❗️");
     } finally {
-      SetisProccessing(false);
+      setButtonstate(false);
     }
   };
 
@@ -58,8 +56,7 @@ const SignupForm = () => {
         type="text"
         name="firstname"
         id="firstname"
-        value={firstname}
-        onChange={(e) => setFirstname(e.target.value)}
+        ref={firstnameInput}
         required
       />
       <label htmlFor="lastname">Last Name:</label>
@@ -67,20 +64,12 @@ const SignupForm = () => {
         type="text"
         name="lastname"
         id="lastname"
-        value={lastname}
-        onChange={(e) => setLastname(e.target.value)}
+        ref={lastnameInput}
         required
       />
       <label htmlFor="email">Email:</label>
-      <input
-        type="email"
-        name="email"
-        id="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <button type="submit" disabled={isProccessing}>
+      <input type="email" name="email" id="email" ref={emailInput} required />
+      <button type="submit" disabled={buttonstate}>
         Sign Up
       </button>
     </form>
