@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const ListAllusers = () => {
+const ListAllusers = ({ reloadUsers }: { reloadUsers: number }) => {
   const [users, setUsers] = useState([]);
 
   // Use Vite's built in .env processing
@@ -22,7 +22,7 @@ const ListAllusers = () => {
     };
 
     fetchUsers();
-  }, []);
+  }, [reloadUsers]);
   console.log("USERS >>>", users);
   return (
     <div>
