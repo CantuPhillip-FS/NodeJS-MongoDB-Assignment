@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 
-const SignupForm = () => {
+const SignupForm = ({ onSignup }: { onSignup: () => void }) => {
   const firstnameInput = useRef("");
   const lastnameInput = useRef("");
   const emailInput = useRef("");
@@ -34,6 +34,7 @@ const SignupForm = () => {
       if (response.ok) {
         toast.success("Welcome! 🥳");
         clearInputs();
+        onSignup();
       } else {
         const body = await response.json();
         toast.error(
