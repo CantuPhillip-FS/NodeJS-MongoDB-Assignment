@@ -27,13 +27,21 @@ const ListAllusers = ({ reloadUsers }: { reloadUsers: number }) => {
 
   const handleDelete = async (id: string) => {
     const result = await deleteUser(id);
-    // ListAllusers({ reloadUsers });
-    if (result) toast.success("User deleted!");
+    if (result) {
+      const fetchUsers = async () => {
+        const allUsers = await fetchAllUsers();
+        if (!allUsers) return "No existing users found.";
+        if (allUsers) return setUsers(allUsers);
+      };
+      fetchUsers();
+      toast.success("User deleted!");
+    }
     if (!result) toast.error("Could not delete user");
   };
   return (
     <div>
       <h2>Current Users</h2>
+      {/* Map Users or display message */}
       {users.length > 0 ? (
         users.map((user) => (
           <article key={user._id}>
