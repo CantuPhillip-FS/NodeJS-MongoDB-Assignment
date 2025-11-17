@@ -1,18 +1,27 @@
 import { useEffect, useState } from "react";
 
-const ListAllusers = ({ reloadUsers }: { reloadUsers: number }) => {
-  const [users, setUsers] = useState([]);
+// TS: Must first define the User type otherwise it's type: never
+type User = {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+};
 
-  // Use Vite's built in .env processing
-  const baseUrl: string = import.meta.env.VITE_USER_BASE_URL;
+const ListAllusers = ({ reloadUsers }: { reloadUsers: number }) => {
+  // Pass my customer User type
+  const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
+    // Use Vite's built in .env processing
+    const baseUrl: string = import.meta.env.VITE_USER_BASE_URL;
     const fetchUsers = async () => {
       try {
         const response = await fetch(baseUrl, { method: "GET" });
         console.log("RESPONSE >>>", response);
         if (response.ok) {
-          const body = await response.json();
+          // TS: deconstruct and extract the users as an array of my User type
+          const body: { users: User[] } = await response.json();
           console.log("BODY >>>", body);
           setUsers(body.users);
         }

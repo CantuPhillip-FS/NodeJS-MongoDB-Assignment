@@ -2,13 +2,15 @@ import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 
 const SignupForm = ({ onSignup }: { onSignup: () => void }) => {
-  const firstnameInput = useRef("");
-  const lastnameInput = useRef("");
-  const emailInput = useRef("");
+  // TS: Updated useRef, must point to an HTMLInputElement
+  const firstnameInput = useRef<HTMLInputElement | null>(null);
+  const lastnameInput = useRef<HTMLInputElement | null>(null);
+  const emailInput = useRef<HTMLInputElement | null>(null);
   const clearInputs = () => {
-    firstnameInput.current.value = "";
-    lastnameInput.current.value = "";
-    emailInput.current.value = "";
+    // TS: prevent the "can be null" with a fallback
+    if (firstnameInput.current) firstnameInput.current.value = "";
+    if (lastnameInput.current) lastnameInput.current.value = "";
+    if (emailInput.current) emailInput.current.value = "";
   };
   const [buttonstate, setButtonstate] = useState(false);
 
@@ -19,9 +21,9 @@ const SignupForm = ({ onSignup }: { onSignup: () => void }) => {
     setButtonstate(true);
     try {
       console.log("Signup Form Submitted");
-      const firstnameValue = firstnameInput.current.value;
-      const lastnameValue = lastnameInput.current.value;
-      const emailValue = emailInput.current.value;
+      const firstnameValue = firstnameInput.current?.value ?? "";
+      const lastnameValue = lastnameInput.current?.value ?? "";
+      const emailValue = emailInput.current?.value ?? "";
       const response = await fetch(baseUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
