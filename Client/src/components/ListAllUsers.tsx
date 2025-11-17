@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import deleteUser from "../services/deleteUser";
+import fetchAllUsers from "../services/fetchAllUsers";
 
 // TS: Must first define the User type otherwise it's type: never
 type User = {
@@ -15,23 +16,11 @@ const ListAllusers = ({ reloadUsers }: { reloadUsers: number }) => {
   const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
-    // Use Vite's built in .env processing
-    const baseUrl: string = import.meta.env.VITE_USER_BASE_URL;
     const fetchUsers = async () => {
-      try {
-        const response = await fetch(baseUrl, { method: "GET" });
-        // console.log("RESPONSE >>>", response);
-        if (response.ok) {
-          // TS: deconstruct and extract the users as an array of my User type
-          const body: { users: User[] } = await response.json();
-          console.log("Response.json > BODY >>>", body);
-          setUsers(body.users);
-        }
-      } catch (error) {
-        console.log(error);
-      }
+      const allUsers = await fetchAllUsers();
+      if (!allUsers) return "No existing users found.";
+      if (allUsers) return setUsers(allUsers);
     };
-
     fetchUsers();
   }, [reloadUsers]);
   console.log("USERS >>>", users);
@@ -45,15 +34,19 @@ const ListAllusers = ({ reloadUsers }: { reloadUsers: number }) => {
   return (
     <div>
       <h2>Current Users</h2>
-      {users.map((user) => (
-        <article key={user._id}>
-          <p>
-            {user.firstName} {user.lastName}
-          </p>
-          <p>{user.email}</p>
-          <button onClick={() => handleDelete(user._id)}>Delete</button>
-        </article>
-      ))}
+      {users.length > 0 ? (
+        users.map((user) => (
+          <article key={user._id}>
+            <p>
+              {user.firstName} {user.lastName}
+            </p>
+            <p>{user.email}</p>
+            <button onClick={() => handleDelete(user._id)}>Delete</button>
+          </article>
+        ))
+      ) : (
+        <p>No existing users.</p>
+      )}
     </div>
   );
 };
