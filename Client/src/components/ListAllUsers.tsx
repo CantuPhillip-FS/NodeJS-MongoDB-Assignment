@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import deleteUser from "../services/deleteUser";
 
 // TS: Must first define the User type otherwise it's type: never
 type User = {
@@ -33,16 +35,24 @@ const ListAllusers = ({ reloadUsers }: { reloadUsers: number }) => {
     fetchUsers();
   }, [reloadUsers]);
   console.log("USERS >>>", users);
+
+  const handleDelete = async (id: string) => {
+    const result = await deleteUser(id);
+    // ListAllusers({ reloadUsers });
+    if (result) toast.success("User deleted!");
+    if (!result) toast.error("Could not delete user");
+  };
   return (
     <div>
       <h2>Current Users</h2>
       {users.map((user) => (
-        <ul>
-          <li>
+        <article key={user._id}>
+          <p>
             {user.firstName} {user.lastName}
-          </li>
-          <li key={user._id}>{user.email}</li>
-        </ul>
+          </p>
+          <p>{user.email}</p>
+          <button onClick={() => handleDelete(user._id)}>Delete</button>
+        </article>
       ))}
     </div>
   );
