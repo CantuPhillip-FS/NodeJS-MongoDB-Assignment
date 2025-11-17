@@ -79,15 +79,16 @@ const SearchAnime = () => {
   };
 
   return (
-    <>
+    <section>
+      <h2>Anime Search</h2>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="search">Search for an anime:</label>
         <input
           type="text"
           name="search"
           id="search"
           onChange={handleChange}
           value={term}
+          placeholder="Ex: Sword"
         />
         <button type="submit">Submit</button>
       </form>
@@ -100,7 +101,7 @@ const SearchAnime = () => {
       {animes && animes.map((anime) => <p key={anime._id}>{anime.title}</p>)}
       {allAnimes &&
         allAnimes.map((anime) => <p key={anime._id}>{anime.title}</p>)}
-    </>
+    </section>
   );
 };
 

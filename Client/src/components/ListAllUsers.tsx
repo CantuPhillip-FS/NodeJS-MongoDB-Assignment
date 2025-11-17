@@ -39,7 +39,7 @@ const ListAllusers = ({ reloadUsers }: { reloadUsers: number }) => {
     if (!result) toast.error("Could not delete user");
   };
   return (
-    <div>
+    <section>
       <h2>Current Users</h2>
       {/* Map Users or display message */}
       {users.length > 0 ? (
@@ -55,7 +55,7 @@ const ListAllusers = ({ reloadUsers }: { reloadUsers: number }) => {
       ) : (
         <p>No existing users.</p>
       )}
-    </div>
+    </section>
   );
 };
 

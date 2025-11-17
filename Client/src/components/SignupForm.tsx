@@ -53,7 +53,7 @@ const SignupForm = ({ onSignup }: { onSignup: () => void }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <p>Sign Up</p>
+      <h2>Sign Up</h2>
       <label htmlFor="firstname">First Name:</label>
       <input
         type="text"
