@@ -1,20 +1,21 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-// TS: Define Anime type for fetch
-type Anime = {
+// TS: Define Studio type for fetch
+type Studio = {
   _id: string;
-  title: string;
-  year_released: number;
-  average_rating: number;
-  // I'll add studio props if needed
+  name: string;
+  year_founded: number;
+  headquarter: string;
+  website: string;
+  isActive: boolean;
 };
 
-const SearchAnime = () => {
+const SearchStudio = () => {
   const [term, setTerm] = useState<string>("");
 
-  // define as an array of my Anime type
-  const [animes, setAnimes] = useState<Anime[]>([]);
+  // define as an array of my Studio type
+  const [studios, setStudios] = useState<Studio[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTerm(e.target.value);
@@ -22,8 +23,8 @@ const SearchAnime = () => {
   };
 
   //   Use Vite's built in .env processing
-  const baseUrl: string = import.meta.env.VITE_ANIME_BASE_URL;
-  const fetchAnimes = async (searchTerm: string) => {
+  const baseUrl: string = import.meta.env.VITE_STUDIO_BASE_URL;
+  const fetchStudios = async (searchTerm: string) => {
     try {
       const response = await fetch(baseUrl);
       //   console.log("RESPONSE >>>", response);
@@ -34,30 +35,29 @@ const SearchAnime = () => {
       }
 
       // define and extract the animes
-      const body: { animes: Anime[] } = await response.json();
+      const body: { studios: Studio[] } = await response.json();
       // console.log("BODY >>>", body);
 
-      const allAnimes = body.animes;
-      console.log("allAnimes >>>", allAnimes);
+      const allStudios = body.studios;
+      console.log("allStudios >>>", allStudios);
 
       console.log("searchTerm >>>", searchTerm);
-      const filteredAnimes = allAnimes.filter((anime) =>
-        anime.title.toLowerCase().includes(searchTerm.toLowerCase())
+      const filteredStudios = allStudios.filter((studio) =>
+        studio.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
-      console.log("filteredAnimes >>>", filteredAnimes);
-      if (filteredAnimes.length < 1) {
-        toast.error("No animes found.");
+      console.log("filteredAnimes >>>", filteredStudios);
+      if (filteredStudios.length < 1) {
+        toast.error("No studios found.");
       } else {
         toast.success("Success!");
       }
 
-      return filteredAnimes;
+      return filteredStudios;
     } catch (error) {
       console.error(error);
       // cannot use "error" as a 2nd argument for toast so used template literal
       // TS: error has an unknown type in catch that can't be changed there but can be in literal
       toast.error(`Something went wrong: ${String(error)}`);
-      // make fetchAnimes always return something
       return [];
     }
   };
@@ -66,16 +66,16 @@ const SearchAnime = () => {
     e.preventDefault();
     if (!term) return toast.error("Search field cannot be empty");
 
-    const filteredAnimes = await fetchAnimes(term);
-    setAnimes(filteredAnimes);
-    console.log("animes >>>", animes);
+    const filteredStudios = await fetchStudios(term);
+    setStudios(filteredStudios);
+    console.log("studios >>>", studios);
     setTerm("");
   };
 
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="search">Search for an anime:</label>
+        <label htmlFor="search">Search for a studio:</label>
         <input
           type="text"
           name="search"
@@ -85,9 +85,10 @@ const SearchAnime = () => {
         />
         <button type="submit">Submit</button>
       </form>
-      {animes && animes.map((anime) => <p key={anime._id}>{anime.title}</p>)}
+      {studios &&
+        studios.map((studio) => <p key={studio._id}>{studio.name}</p>)}
     </>
   );
 };
 
-export default SearchAnime;
+export default SearchStudio;

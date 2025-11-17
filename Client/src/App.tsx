@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ListAllusers from "./components/ListAllUsers";
-import SearchBar from "./components/SearchAnime";
+import SearchAnime from "./components/SearchAnime";
+import SearchStudio from "./components/SearchStudio";
 import SignupForm from "./components/SignupForm";
 
 function App() {
@@ -10,7 +11,8 @@ function App() {
   return (
     <main>
       <h1>Hello World</h1>
-      <SearchBar />
+      <SearchAnime />
+      <SearchStudio />
       <SignupForm onSignup={() => setReloadUsers((state) => state + 1)} />
       <ListAllusers reloadUsers={reloadUsers} />
     </main>

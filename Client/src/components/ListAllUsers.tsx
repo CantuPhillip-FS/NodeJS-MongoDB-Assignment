@@ -18,11 +18,11 @@ const ListAllusers = ({ reloadUsers }: { reloadUsers: number }) => {
     const fetchUsers = async () => {
       try {
         const response = await fetch(baseUrl, { method: "GET" });
-        console.log("RESPONSE >>>", response);
+        // console.log("RESPONSE >>>", response);
         if (response.ok) {
           // TS: deconstruct and extract the users as an array of my User type
           const body: { users: User[] } = await response.json();
-          console.log("BODY >>>", body);
+          console.log("Response.json > BODY >>>", body);
           setUsers(body.users);
         }
       } catch (error) {
