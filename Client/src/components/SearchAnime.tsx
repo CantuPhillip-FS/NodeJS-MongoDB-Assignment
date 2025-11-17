@@ -1,13 +1,12 @@
 import { useState } from "react";
-
-// const SearchBar = ({ onSubmit }: { onSubmit: () => void }) => {
+import toast from "react-hot-toast";
 const SearchBar = () => {
   const [term, setTerm] = useState("");
   const [animes, setAnimes] = useState([]);
 
   const handleChange = (e: React.FormEvent<HTMLFormElement>) => {
     setTerm(e.target.value);
-    console.log("term value >>>", term);
+    // console.log("term value >>>", term);
   };
 
   //   Use Vite's built in .env processing
@@ -28,18 +27,26 @@ const SearchBar = () => {
           anime.title.includes(searchTerm)
         );
         console.log("filteredAnimes >>>", filteredAnimes);
+        if (filteredAnimes.length < 1) {
+          toast.error("No animes found.");
+        } else {
+          toast.success("Success!");
+        }
 
-        await setAnimes(filteredAnimes);
-        console.log("animes >>>", animes);
+        return filteredAnimes;
       }
     } catch (error) {
       console.log(error);
+      toast.error("Something went wrong", error);
     }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await fetchAnimes(term);
+    if (!term) return toast.error("Search field cannot be empty");
+    const filteredAnimes = await fetchAnimes(term);
+    setAnimes(filteredAnimes);
+    console.log("animes >>>", animes);
     setTerm("");
   };
 
@@ -56,9 +63,7 @@ const SearchBar = () => {
         />
         <button type="submit">Submit</button>
       </form>
-      {animes.length > 0
-        ? animes.map((anime) => <p>{anime.title}</p>)
-        : "No anime found."}
+      {animes && animes.map((anime) => <p>{anime.title}</p>)}
     </>
   );
 };
