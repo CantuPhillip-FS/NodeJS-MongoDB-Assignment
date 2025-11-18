@@ -10,7 +10,8 @@ type Studio = {
 
 const baseUrl: string = import.meta.env.VITE_STUDIO_BASE_URL;
 
-const postNewStudio = async (body: Studio) => {
+const postNewStudio = async (body: Studio): Promise<boolean> => {
+  // TS: explicitly tell the promise to return a boolean
   try {
     const response = await fetch(baseUrl, {
       method: "POST",
@@ -23,16 +24,18 @@ const postNewStudio = async (body: Studio) => {
     const data = await response.json();
     if (!response.ok) {
       console.log("ERROR BODY >>>", data);
-      return toast.error(
+      toast.error(
         `Studio creation was not successful: ${
           data.message || JSON.stringify(data)
         }`
       );
+      return false;
     }
-    if (response.ok) return true;
+    return true;
   } catch (error) {
     console.log(error);
     toast.error("Something went wrong. No new studio created.");
+    return false;
   }
 };
 

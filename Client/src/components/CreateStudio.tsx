@@ -15,6 +15,7 @@ type Studio = {
 // Much better than having a state for each input
 
 const CreateStudio = () => {
+  // Start with a blank state
   const blankStudio: Studio = {
     name: "",
     year_founded: 0,
@@ -22,28 +23,41 @@ const CreateStudio = () => {
     website: "",
     isActive: true,
   };
+
   const [studio, setStudio] = useState<Studio>(blankStudio);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const name = e.target.name;
-    const value = e.target.value;
+    // extract the name and value of the event target
+    const { name, value } = e.target;
+
+    // when setting the state we don't want to override previous states so we use prev and spread operator
+    // additionally, year_founded is a number, but target sends it as a string, so we must convert
     setStudio((prev) => {
+      if (name === "year_founded") {
+        return { ...prev, year_founded: Number(value) };
+      }
+      if (name === "isActive") {
+        return { ...prev, isActive: value === "true" };
+      }
+      // after conversions set the other states
       return { ...prev, [name]: value };
     });
   };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       console.log("Submitted Form");
       const response = await postNewStudio(studio);
-      if (!response) {
-        return;
-      }
+      if (!response) return;
+
       console.log("Studio >>>", studio);
       toast.success("Studio Created!");
       return;
     } catch (error) {
       console.log("ERROR>>>", error);
-      toast.error(`Something went wrong: ${String(error.message)}`);
+      toast.error(`Something went wrong: ${String(error)}`);
+      return;
     }
   };
 
