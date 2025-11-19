@@ -103,7 +103,15 @@ const SearchAnime = () => {
       </button>
       {animes && animes.map((anime) => <p key={anime._id}>{anime.title}</p>)}
       {allAnimes &&
-        allAnimes.map((anime) => <p key={anime._id}>{anime.title}</p>)}
+        allAnimes.map((anime) => (
+          <details key={anime._id} className="anime-details">
+            <summary>{anime.title}</summary>
+            <ul>
+              <li>Year Released: {anime.year_released}</li>
+              <li>Average Rating: {anime.average_rating}</li>
+            </ul>
+          </details>
+        ))}
     </section>
   );
 };
