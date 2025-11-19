@@ -52,30 +52,32 @@ const SignupForm = ({ onSignup }: { onSignup: () => void }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <section>
       <h2>Sign Up</h2>
-      <label htmlFor="firstname">First Name:</label>
-      <input
-        type="text"
-        name="firstname"
-        id="firstname"
-        ref={firstnameInput}
-        required
-      />
-      <label htmlFor="lastname">Last Name:</label>
-      <input
-        type="text"
-        name="lastname"
-        id="lastname"
-        ref={lastnameInput}
-        required
-      />
-      <label htmlFor="email">Email:</label>
-      <input type="email" name="email" id="email" ref={emailInput} required />
-      <button type="submit" disabled={buttonstate}>
-        Sign Up
-      </button>
-    </form>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="firstname">First Name:</label>
+        <input
+          type="text"
+          name="firstname"
+          id="firstname"
+          ref={firstnameInput}
+          required
+        />
+        <label htmlFor="lastname">Last Name:</label>
+        <input
+          type="text"
+          name="lastname"
+          id="lastname"
+          ref={lastnameInput}
+          required
+        />
+        <label htmlFor="email">Email:</label>
+        <input type="email" name="email" id="email" ref={emailInput} required />
+        <button type="submit" disabled={buttonstate}>
+          Sign Up
+        </button>
+      </form>
+    </section>
   );
 };
 

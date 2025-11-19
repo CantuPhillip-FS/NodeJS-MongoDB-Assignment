@@ -19,3 +19,26 @@ body {
   min-width: 100vw;
   min-height: 100vh;
 }
+
+header {
+  text-align: center;
+}
+
+main {
+  padding: 0 1rem;
+}
+
+footer {
+  font-size: 0.75rem;
+  padding: 1rem 0 0.5rem 0;
+}
+
+a {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+/* Utility Classes */
+.centered-text {
+  text-align: center;
+}

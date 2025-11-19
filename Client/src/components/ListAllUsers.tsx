@@ -12,7 +12,7 @@ type User = {
   email: string;
 };
 
-const ListAllusers = ({ reloadUsers }: { reloadUsers: number }) => {
+const ListAllUsers = ({ reloadUsers }: { reloadUsers: number }) => {
   // Pass my customer User type
   const [users, setUsers] = useState<User[]>([]);
   const [editing, setEditing] = useState(false);
@@ -70,4 +70,4 @@ const ListAllusers = ({ reloadUsers }: { reloadUsers: number }) => {
   );
 };
 
-export default ListAllusers;
+export default ListAllUsers;

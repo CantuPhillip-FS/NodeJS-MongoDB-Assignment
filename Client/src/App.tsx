@@ -1,6 +1,6 @@
 import { useState } from "react";
 import CreateStudio from "./components/CreateStudio";
-import ListAllusers from "./components/ListAllUsers";
+import ListAllUsers from "./components/ListAllUsers";
 import SearchAnime from "./components/SearchAnime";
 import SearchStudio from "./components/SearchStudio";
 import SignupForm from "./components/SignupForm";
@@ -13,12 +13,12 @@ function App() {
 
   return (
     <main>
-      <h1>Hello World</h1>
+      <h2 className="centered-text">Dashboard</h2>
       <SearchAnime />
       <SearchStudio />
       <CreateStudio />
       <SignupForm onSignup={() => setReloadUsers((state) => state + 1)} />
-      <ListAllusers reloadUsers={reloadUsers} />\{" "}
+      <ListAllUsers reloadUsers={reloadUsers} />
     </main>
   );
 }
