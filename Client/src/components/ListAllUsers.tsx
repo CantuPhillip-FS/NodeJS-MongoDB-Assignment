@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import deleteUser from "../services/deleteUser";
 import fetchAllUsers from "../services/fetchAllUsers";
+import EditUser from "./EditUser";
 
 // TS: Must first define the User type otherwise it's type: never
 type User = {
@@ -14,6 +15,7 @@ type User = {
 const ListAllusers = ({ reloadUsers }: { reloadUsers: number }) => {
   // Pass my customer User type
   const [users, setUsers] = useState<User[]>([]);
+  const [editing, setEditing] = useState(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -38,6 +40,11 @@ const ListAllusers = ({ reloadUsers }: { reloadUsers: number }) => {
     }
     if (!result) toast.error("Could not delete user");
   };
+
+  const editUser = () => {
+    if (!editing) return setEditing(true);
+    if (editing) return setEditing(false);
+  };
   return (
     <section>
       <h2>Current Users</h2>
@@ -50,11 +57,23 @@ const ListAllusers = ({ reloadUsers }: { reloadUsers: number }) => {
             </p>
             <p>{user.email}</p>
             <button onClick={() => handleDelete(user._id)}>Delete</button>
+            <button onClick={editUser}>Edit</button>
           </article>
         ))
       ) : (
         <p>No existing users.</p>
       )}
+      {editing &&
+        users.map((user) => (
+          <EditUser
+            user={user}
+            // id={user._id}
+            // firstName={user.firstName}
+            // lastName={user.lastName}
+            // email={user.email}
+            onSubmit={editUser}
+          />
+        ))}
     </section>
   );
 };
