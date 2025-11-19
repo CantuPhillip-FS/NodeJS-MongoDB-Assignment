@@ -19,7 +19,8 @@ const EditUser = ({ user, onSubmit }: { user: User; onSubmit: () => void }) => {
   const [lname, setlName] = useState(user.lastName);
   const [emailVal, setEmailVal] = useState(user.email);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const body = {
       firstName: fname,
       lastName: lname,
@@ -28,12 +29,13 @@ const EditUser = ({ user, onSubmit }: { user: User; onSubmit: () => void }) => {
     try {
       const response = await putUpdateUser(userId, body);
       if (response) {
-        onSubmit();
+        console.log("RESPONSE >>>", response);
         toast.success("User updated!");
       }
     } catch (error) {
       console.log("ERROR >>>", error);
-      toast.error(`User update failed: ${String(error)}`);
+    } finally {
+      onSubmit();
     }
   };
 
@@ -67,6 +69,9 @@ const EditUser = ({ user, onSubmit }: { user: User; onSubmit: () => void }) => {
         required
       />
       <button type="submit">Submit</button>
+      <button type="button" onClick={() => onSubmit()}>
+        Cancel
+      </button>
     </form>
   );
 };

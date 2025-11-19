@@ -45,6 +45,7 @@ const ListAllusers = ({ reloadUsers }: { reloadUsers: number }) => {
     if (!editing) return setEditing(true);
     if (editing) return setEditing(false);
   };
+
   return (
     <section>
       <h2>Current Users</h2>
@@ -64,16 +65,7 @@ const ListAllusers = ({ reloadUsers }: { reloadUsers: number }) => {
         <p>No existing users.</p>
       )}
       {editing &&
-        users.map((user) => (
-          <EditUser
-            user={user}
-            // id={user._id}
-            // firstName={user.firstName}
-            // lastName={user.lastName}
-            // email={user.email}
-            onSubmit={editUser}
-          />
-        ))}
+        users.map((user) => <EditUser user={user} onSubmit={editUser} />)}
     </section>
   );
 };

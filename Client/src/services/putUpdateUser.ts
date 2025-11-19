@@ -1,5 +1,3 @@
-import toast from "react-hot-toast";
-
 type User = {
   firstName: string;
   lastName: string;
@@ -19,7 +17,6 @@ const putUpdateUser = async (id: string, body: User) => {
     });
     console.log("SERVER RESPONSE >>>", response);
     console.log("SERVER RESPONSE.BODY >>>", response.body);
-    if (!response.ok) return toast.error("User update failed");
     return response;
   } catch (error) {
     console.log("ERROR >>>", error);
