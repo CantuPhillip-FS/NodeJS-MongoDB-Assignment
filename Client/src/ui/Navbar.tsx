@@ -1,7 +1,11 @@
+import { Link } from "react-router";
+
 const Navbar = () => {
   return (
     <header>
-      <h1>Admin</h1>
+      <h1>
+        <Link to="/">Admin</Link>
+      </h1>
     </header>
   );
 };
