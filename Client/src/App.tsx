@@ -1,5 +1,6 @@
 import { useState } from "react";
 import CreateStudio from "./components/CreateStudio";
+import EditUser from "./components/EditUser";
 import ListAllusers from "./components/ListAllUsers";
 import SearchAnime from "./components/SearchAnime";
 import SearchStudio from "./components/SearchStudio";
@@ -17,6 +18,7 @@ function App() {
       <CreateStudio />
       <SignupForm onSignup={() => setReloadUsers((state) => state + 1)} />
       <ListAllusers reloadUsers={reloadUsers} />
+      <EditUser />
     </main>
   );
 }
