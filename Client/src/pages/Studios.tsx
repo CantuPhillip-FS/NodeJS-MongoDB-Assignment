@@ -1,12 +1,16 @@
 import CreateStudio from "../components/CreateStudio";
 import SearchStudio from "../components/SearchStudio";
+import NavBar from "../ui/Navbar";
 
 const Studios = () => {
   return (
-    <main>
-      <SearchStudio />
-      <CreateStudio />
-    </main>
+    <>
+      <NavBar />
+      <main>
+        <SearchStudio />
+        <CreateStudio />
+      </main>
+    </>
   );
 };
 

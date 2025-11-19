@@ -1,10 +1,14 @@
 import SearchAnime from "../components/SearchAnime";
+import NavBar from "../ui/Navbar";
 
 const Animes = () => {
   return (
-    <main>
-      <SearchAnime />
-    </main>
+    <>
+      <NavBar />
+      <main>
+        <SearchAnime />
+      </main>
+    </>
   );
 };
 

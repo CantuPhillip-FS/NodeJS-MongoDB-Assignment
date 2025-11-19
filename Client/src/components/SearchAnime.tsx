@@ -81,7 +81,8 @@ const SearchAnime = () => {
   return (
     <section>
       <h2>Anime Search</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="centered-form">
+        <label htmlFor="search">Anime name:</label>
         <input
           type="text"
           name="search"
@@ -90,7 +91,9 @@ const SearchAnime = () => {
           value={term}
           placeholder="Ex: Sword"
         />
-        <button type="submit">Submit</button>
+        <button type="submit" style={{ marginTop: "0.8rem", width: "100%" }}>
+          Submit
+        </button>
       </form>
       <button type="button" onClick={handleAllAnimes}>
         View All Animes

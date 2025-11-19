@@ -1,12 +1,13 @@
-import { Link } from "react-router";
+import { NavLink } from "react-router";
 
-const Navbar = () => {
+const NavBar = () => {
   return (
-    <header>
-      <h1>
-        <Link to="/">Admin</Link>
-      </h1>
-    </header>
+    <nav>
+      <NavLink to="/users">users</NavLink>
+      <NavLink to="/studios">studios</NavLink>
+      <NavLink to="/animes">animes</NavLink>
+    </nav>
   );
 };
-export default Navbar;
+
+export default NavBar;

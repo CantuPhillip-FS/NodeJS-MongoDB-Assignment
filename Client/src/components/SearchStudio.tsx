@@ -74,7 +74,8 @@ const SearchStudio = () => {
   return (
     <section>
       <h2>Studio Search</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="centered-form">
+        <label htmlFor="search">Studio Name:</label>
         <input
           type="text"
           name="search"
@@ -83,7 +84,9 @@ const SearchStudio = () => {
           value={term}
           placeholder="Ex: Ghibli"
         />
-        <button type="submit">Submit</button>
+        <button type="submit" style={{ marginTop: "0.8rem", width: "100%" }}>
+          Submit
+        </button>
       </form>
       <button type="button" onClick={handleAllStudios}>
         View All Studios

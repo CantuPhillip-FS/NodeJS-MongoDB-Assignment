@@ -54,13 +54,14 @@ const SignupForm = ({ onSignup }: { onSignup: () => void }) => {
   return (
     <section>
       <h2>Sign Up</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="centered-form">
         <label htmlFor="firstname">First Name:</label>
         <input
           type="text"
           name="firstname"
           id="firstname"
           ref={firstnameInput}
+          placeholder="John"
           required
         />
         <label htmlFor="lastname">Last Name:</label>
@@ -69,11 +70,23 @@ const SignupForm = ({ onSignup }: { onSignup: () => void }) => {
           name="lastname"
           id="lastname"
           ref={lastnameInput}
+          placeholder="Doe"
           required
         />
         <label htmlFor="email">Email:</label>
-        <input type="email" name="email" id="email" ref={emailInput} required />
-        <button type="submit" disabled={buttonstate}>
+        <input
+          type="email"
+          name="email"
+          id="email"
+          ref={emailInput}
+          placeholder="your@email.com"
+          required
+        />
+        <button
+          type="submit"
+          disabled={buttonstate}
+          style={{ marginTop: "0.8rem", width: "100%" }}
+        >
           Sign Up
         </button>
       </form>

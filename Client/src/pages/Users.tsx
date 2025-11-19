@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ListAllUsers from "../components/ListAllUsers";
 import SignupForm from "../components/SignupForm";
+import NavBar from "../ui/Navbar";
 
 const Users = () => {
   // this state is used to properly re-fetch the users upon new signups
@@ -9,10 +10,13 @@ const Users = () => {
   // https://www.youtube.com/watch?v=rjYsntD4Xks
 
   return (
-    <main>
-      <SignupForm onSignup={() => setReloadUsers((state) => state + 1)} />
-      <ListAllUsers reloadUsers={reloadUsers} />
-    </main>
+    <>
+      <NavBar />
+      <main>
+        <SignupForm onSignup={() => setReloadUsers((state) => state + 1)} />
+        <ListAllUsers reloadUsers={reloadUsers} />
+      </main>
+    </>
   );
 };
 

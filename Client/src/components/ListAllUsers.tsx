@@ -54,7 +54,9 @@ const ListAllUsers = ({ reloadUsers }: { reloadUsers: number }) => {
         users.map((user) => (
           <article key={user._id}>
             <p>
-              {user.firstName} {user.lastName}
+              <strong>
+                {user.firstName} {user.lastName}
+              </strong>
             </p>
             <p>{user.email}</p>
             <button onClick={() => handleDelete(user._id)}>Delete</button>

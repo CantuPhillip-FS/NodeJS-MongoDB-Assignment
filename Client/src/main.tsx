@@ -7,11 +7,11 @@ import Animes from "./pages/Animes.tsx";
 import Studios from "./pages/Studios.tsx";
 import Users from "./pages/Users.tsx";
 import Footer from "./ui/Footer.tsx";
-import Navbar from "./ui/Navbar.tsx";
+import Header from "./ui/Header.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
-    <Navbar />
+    <Header />
     <Routes>
       <Route index element={<App />} />
       <Route path="/" element={<App />} />
