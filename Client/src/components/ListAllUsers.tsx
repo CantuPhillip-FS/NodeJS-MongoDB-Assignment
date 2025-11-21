@@ -44,9 +44,11 @@ const ListAllUsers = ({ reloadUsers }: { reloadUsers: number }) => {
     dialogRef.current?.showModal(); // opens <dialog>
   };
 
-  const closeEditor = () => {
+  const closeEditor = async () => {
     dialogRef.current?.close();
     setSelectedUser(null);
+    const refreshed = await fetchAllUsers();
+    if (refreshed) setUsers(refreshed);
   };
 
   return (
