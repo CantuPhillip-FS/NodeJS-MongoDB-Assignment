@@ -64,7 +64,7 @@ const CreateStudio = () => {
   return (
     <section>
       <h2>Add an Anime Studio</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="centered-form">
         <label htmlFor="name">Name:</label>
         <input
           type="text"
@@ -105,23 +105,33 @@ const CreateStudio = () => {
           required
         />
 
-        <label htmlFor="isActive">Active?:</label>
-        <input
-          type="radio"
-          name="isActive"
-          onChange={handleChange}
-          checked={studio.isActive === true}
-          required
-        />
-        <label htmlFor="yes">Yes</label>
-        <input
-          type="radio"
-          name="isActive"
-          onChange={handleChange}
-          checked={studio.isActive === false}
-          required
-        />
-        <label htmlFor="no">No</label>
+        <p>Active?:</p>
+
+        <div className="radio-buttons">
+          <label>
+            Yes
+            <input
+              type="radio"
+              name="isActive"
+              value="true"
+              checked={studio.isActive === true}
+              onChange={handleChange}
+              required
+            />
+          </label>
+
+          <label>
+            No
+            <input
+              type="radio"
+              name="isActive"
+              value="false"
+              checked={studio.isActive === false}
+              onChange={handleChange}
+              required
+            />
+          </label>
+        </div>
         <button type="submit">Create Studio</button>
       </form>
     </section>

@@ -1,5 +1,5 @@
 import SearchAnime from "../components/SearchAnime";
-import NavBar from "../ui/NavBar";
+import NavBar from "../ui/Navbar";
 
 const Animes = () => {
   return (
