@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import deleteUser from "../services/deleteUser";
 import fetchAllUsers from "../services/fetchAllUsers";
@@ -13,61 +13,69 @@ type User = {
 };
 
 const ListAllUsers = ({ reloadUsers }: { reloadUsers: number }) => {
-  // Pass my customer User type
+  // Pass my custom User type
   const [users, setUsers] = useState<User[]>([]);
-  const [editing, setEditing] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+
+  // a ref is needed to reference an html element, only for the dialog
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const loadUsers = async () => {
       const allUsers = await fetchAllUsers();
-      if (!allUsers) return "No existing users found.";
-      if (allUsers) return setUsers(allUsers);
+      if (allUsers) setUsers(allUsers);
     };
-    fetchUsers();
+    loadUsers();
   }, [reloadUsers]);
-  console.log("USERS >>>", users);
 
   const handleDelete = async (id: string) => {
     const result = await deleteUser(id);
     if (result) {
-      const fetchUsers = async () => {
-        const allUsers = await fetchAllUsers();
-        if (!allUsers) return "No existing users found.";
-        if (allUsers) return setUsers(allUsers);
-      };
-      fetchUsers();
+      const refreshed = await fetchAllUsers();
+      if (refreshed) setUsers(refreshed);
       toast.success("User deleted!");
+    } else {
+      toast.error("Could not delete user");
     }
-    if (!result) toast.error("Could not delete user");
   };
 
-  const editUser = () => {
-    if (!editing) return setEditing(true);
-    if (editing) return setEditing(false);
+  const openEditor = (user: User) => {
+    setSelectedUser(user);
+    dialogRef.current?.showModal(); // opens <dialog>
+  };
+
+  const closeEditor = () => {
+    dialogRef.current?.close();
+    setSelectedUser(null);
   };
 
   return (
     <section>
       <h2>Current Users</h2>
-      {/* Map Users or display message */}
+
       {users.length > 0 ? (
         users.map((user) => (
           <article key={user._id}>
-            <p>
+            <p className="user-name">
               <strong>
                 {user.firstName} {user.lastName}
               </strong>
             </p>
             <p>{user.email}</p>
+
             <button onClick={() => handleDelete(user._id)}>Delete</button>
-            <button onClick={editUser}>Edit</button>
+            <button onClick={() => openEditor(user)}>Edit</button>
           </article>
         ))
       ) : (
         <p>No existing users.</p>
       )}
-      {editing &&
-        users.map((user) => <EditUser user={user} onSubmit={editUser} />)}
+
+      <dialog className="user-dialog" ref={dialogRef} id="editDialog">
+        {selectedUser && (
+          <EditUser user={selectedUser} onSubmit={closeEditor} />
+        )}
+      </dialog>
     </section>
   );
 };

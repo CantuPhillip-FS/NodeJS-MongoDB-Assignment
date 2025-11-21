@@ -82,11 +82,7 @@ const SignupForm = ({ onSignup }: { onSignup: () => void }) => {
           placeholder="your@email.com"
           required
         />
-        <button
-          type="submit"
-          disabled={buttonstate}
-          style={{ marginTop: "0.8rem", width: "100%" }}
-        >
+        <button type="submit" disabled={buttonstate}>
           Sign Up
         </button>
       </form>
