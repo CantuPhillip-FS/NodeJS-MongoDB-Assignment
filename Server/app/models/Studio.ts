@@ -5,10 +5,7 @@ const studioSchema = new Schema(
     name: {
       type: String,
       required: [true, "The studio's name is required."],
-      unique: [
-        true,
-        "A studio with this name already exists. Did you mean to update?",
-      ],
+      unique: [true, "A studio with this name already exists."],
       trim: true,
       maxLength: [50, "Studio's Name cannot be more than 50 characters."],
     },

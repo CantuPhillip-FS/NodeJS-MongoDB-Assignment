@@ -1,0 +1,180 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgb(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  padding: 0 1rem;
+  min-width: 100vw;
+  min-height: 100vh;
+}
+
+header {
+  text-align: center;
+}
+
+header h1 {
+  font-size: 1.5rem;
+  color: crimson;
+}
+
+header h1 a {
+  color: crimson;
+}
+
+nav {
+  display: flex;
+  text-transform: uppercase;
+  justify-content: space-evenly;
+}
+
+nav a {
+  background-color: rgb(78, 123, 163, 0.638);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  color: white;
+  font-size: 0.9rem;
+  transition: ease 0.3s;
+}
+
+nav a::before {
+  content: "→ ";
+}
+
+nav a:hover {
+  box-shadow: 0px 4px 4px 2px rgb(255, 255, 255, 0.2);
+}
+
+footer {
+  font-size: 0.75rem;
+  padding: 1rem 0 0.5rem 0;
+}
+
+a {
+  color: white;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.centered-form {
+  min-width: 70%;
+  display: flex;
+  flex-direction: column;
+}
+.centered-form label {
+  margin-top: 0.5rem;
+}
+.centered-form input {
+  border: none;
+  border-radius: 0.15rem;
+  padding: 0.5rem;
+  outline: 1px solid rgb(255, 192, 203, 0.5);
+}
+
+.centered-form input:focus {
+  outline: 1px solid rgb(255, 192, 203, 1);
+}
+
+button {
+  margin: 0.2rem 0.1rem;
+  padding: 0.4rem 0.6rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 0.15rem;
+}
+
+button[type="submit"] {
+  background-color: blue;
+  box-shadow: 0px 2px 2px 2px rgb(255, 255, 255, 0.1);
+}
+
+/* Utility Classes */
+.centered-text {
+  text-align: center;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                              / Homepage Styles                             */
+/* -------------------------------------------------------------------------- */
+
+.card {
+  max-width: 90%;
+  border: 2px solid white;
+  border-radius: 0.25rem;
+  margin: 1rem auto;
+  text-align: center;
+  font-size: 1.5rem;
+  padding: 2rem 1rem;
+  box-shadow: 0px 4px 4px 2px rgb(255, 255, 255, 0.2);
+  transition: ease 0.3s;
+}
+
+.card a {
+  color: black;
+}
+
+.card a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.users-card a::before {
+  content: "👥 ";
+}
+
+.studios-card a::before {
+  content: "🎬 ";
+}
+
+.animes-card a::before {
+  content: "🌸 ";
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                Anime Styles                                */
+/* -------------------------------------------------------------------------- */
+
+.anime-details {
+  align-self: flex-start;
+  cursor: pointer;
+  margin: 0.25rem;
+}
+
+.anime-details:nth-child(odd) {
+  color: red;
+}
+
+/* Style the content area */
+.anime-details[open]:nth-child(odd) {
+  /* This matches only when expanded */
+  background-color: white;
+  width: 100%;
+  border-radius: 0.15rem;
+}
+
+/* Style the content area */
+.anime-details[open]:nth-child(even) {
+  /* This matches only when expanded */
+  background-color: orange;
+  width: 100%;
+  border-radius: 0.15rem;
+  padding: 0 0.25rem;
+}

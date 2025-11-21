@@ -1,3 +1,4 @@
+import cors from "cors";
 import type { Request, Response } from "express";
 import express from "express";
 import morgan from "morgan";
@@ -7,6 +8,8 @@ const app = express();
 
 app.use(morgan("dev"));
 app.use(express.json());
+// Allow cors from anywhere
+app.use(cors());
 
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({ message: "API is running.", success: true });
