@@ -156,27 +156,12 @@ footer {
   padding: 2rem 1rem;
   box-shadow: 0px 4px 4px 2px rgb(255, 255, 255, 0.2);
   transition: ease 0.3s;
-}
-
-.card a {
   color: black;
 }
 
-.card a:hover {
+.card:hover {
+  text-transform: uppercase;
   text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.users-card a::before {
-  content: "👥 ";
-}
-
-.studios-card a::before {
-  content: "🎬 ";
-}
-
-.animes-card a::before {
-  content: "🌸 ";
 }
 
 /* -------------------------------------------------------------------------- */
@@ -220,4 +205,56 @@ footer {
   width: 100%;
   border-radius: 0.15rem;
   padding: 0 0.25rem;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                             Desktop / Large Screen                         */
+/* -------------------------------------------------------------------------- */
+
+@media (min-width: 900px) {
+  body {
+    padding: 0 4rem;
+  }
+
+  section {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .centered-form {
+    min-width: 50%;
+  }
+
+  .centered-form input {
+    min-width: 60%;
+    font-size: 1.1rem;
+  }
+
+  header h1 {
+    font-size: 2.2rem;
+  }
+
+  nav a {
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .card {
+    max-width: 70%;
+    padding: 3rem 2rem;
+    font-size: 2rem;
+  }
+
+  .user-dialog {
+    min-width: 40%;
+  }
+
+  .anime-details[open] {
+    width: 80%;
+  }
+
+  footer {
+    font-size: 1rem;
+    margin-top: 2rem;
+  }
 }
