@@ -22,10 +22,7 @@ const studioSchema = new Schema(
     },
     website: {
       type: String,
-      required: [
-        true,
-        "A website is required, e.g., 'ghibli.jp' OR 'wikipedia.org/wiki/Studio_Ghibli'",
-      ],
+      required: [true, "A website is required. E.g., 'ghibli.jp'"],
       maxlength: [300, "Website cannot be more than 300 charactes"],
     },
     isActive: {

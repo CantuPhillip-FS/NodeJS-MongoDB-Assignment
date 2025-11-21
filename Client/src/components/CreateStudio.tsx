@@ -40,7 +40,7 @@ const CreateStudio = () => {
         return { ...prev, isActive: value === "true" };
       }
       // after conversions set the other states
-      return { ...prev, [name]: value };
+      return { ...prev, [name]: value.trim() };
     });
   };
 

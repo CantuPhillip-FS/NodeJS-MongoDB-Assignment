@@ -7,7 +7,7 @@ type Studio = {
   _id: string;
   name: string;
   year_founded: number;
-  headquarter: string;
+  headquarters: string;
   website: string;
   isActive: boolean;
 };
@@ -54,7 +54,7 @@ const SearchStudio = () => {
     resetForm();
     const filteredStudios = await fetchStudios(term);
     setStudios(filteredStudios);
-    console.log("studios >>>", studios);
+    console.log("filtered studios >>>", studios);
     setTerm("");
   };
 
@@ -62,6 +62,7 @@ const SearchStudio = () => {
     resetForm();
     const data = await fetchAllStudios();
     setAllStudios(data);
+    console.log("All Studios >>>", allStudios);
     toast.success("You've got all the Studios!");
     return data;
   };
@@ -93,9 +94,25 @@ const SearchStudio = () => {
         Reset
       </button>
       {allStudios &&
-        allStudios.map((studio) => <p key={studio._id}>{studio.name}</p>)}
-      {studios &&
-        studios.map((studio) => <p key={studio._id}>{studio.name}</p>)}
+        allStudios.map((studio) => (
+          <details key={studio._id} className="anime-details">
+            <summary>{studio.name}</summary>
+            <ul>
+              <li>
+                <strong>Headerquarters:</strong> {studio.headquarters}
+              </li>
+              <li>
+                <strong>Website:</strong> {studio.website}
+              </li>
+              <li>
+                <strong>Year Founded:</strong> {studio.year_founded}
+              </li>
+              <li>
+                <strong>Still active?:</strong> {studio.isActive ? "Yes" : "No"}
+              </li>
+            </ul>
+          </details>
+        ))}
     </section>
   );
 };
