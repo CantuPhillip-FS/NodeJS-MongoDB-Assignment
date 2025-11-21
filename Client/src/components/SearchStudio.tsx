@@ -93,6 +93,8 @@ const SearchStudio = () => {
       <button type="button" onClick={resetForm}>
         Reset
       </button>
+      {studios &&
+        studios.map((studio) => <p key={studio._id}>{studio.name}</p>)}
       {allStudios &&
         allStudios.map((studio) => (
           <details key={studio._id} className="anime-details">

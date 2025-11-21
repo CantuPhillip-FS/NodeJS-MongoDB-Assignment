@@ -34,7 +34,7 @@ const SignupForm = ({ onSignup }: { onSignup: () => void }) => {
         }),
       });
       if (response.ok) {
-        toast.success("Welcome! 🥳");
+        toast.success("User Added! 🥳");
         clearInputs();
         onSignup();
       } else {
@@ -53,7 +53,7 @@ const SignupForm = ({ onSignup }: { onSignup: () => void }) => {
 
   return (
     <section>
-      <h2>Sign Up</h2>
+      <h2>Add A User</h2>
       <form onSubmit={handleSubmit} className="centered-form">
         <label htmlFor="firstname">First Name:</label>
         <input

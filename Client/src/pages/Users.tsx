@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ListAllUsers from "../components/ListAllUsers";
 import SignupForm from "../components/SignupForm";
-import NavBar from "../ui/NavBar";
+import NavBar from "../ui/Navbar";
 
 const Users = () => {
   // this state is used to properly re-fetch the users upon new signups
