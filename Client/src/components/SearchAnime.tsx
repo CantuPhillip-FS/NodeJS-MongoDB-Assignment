@@ -91,9 +91,7 @@ const SearchAnime = () => {
           value={term}
           placeholder="Ex: Sword"
         />
-        <button type="submit" style={{ marginTop: "0.8rem", width: "100%" }}>
-          Submit
-        </button>
+        <button type="submit">Submit</button>
       </form>
       <button type="button" onClick={handleAllAnimes}>
         View All Animes
