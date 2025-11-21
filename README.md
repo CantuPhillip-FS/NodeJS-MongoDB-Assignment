@@ -118,26 +118,37 @@ PORT=5001
 ### 3️⃣ Run the server
 
 ```bash
+cd Server
 npm run dev
 ```
 
 Server runs at: [http://localhost:5001](http://localhost:5001)
 
+### 4️⃣ Run the client
+
+```bash
+cd Client
+npm run dev
+```
+
+Client runs at: [http://localhost:5173/](http://localhost:5173/)
+
 ## 🧪 API Testing with Postman
 
 This project includes a full **Postman Collection** for testing all API endpoints related to **Anime** and **Studio** CRUD operations.
 
-### 🎬 Video Walkthrough
+### 🎬 Video Walkthroughs
 
-Here's a very quick runthrough of me running through the endpoints and tests with Postman.
+Here's are very quick runthroughs of me running through app.
 
-[YouTube Video](https://youtu.be/FAsBPZ_3RqQ)
+[Backend Video](https://youtu.be/FAsBPZ_3RqQ)
+[Frontend Video](https://youtu.be/ukYUP8hDUQ0)
 
-### 📦 Included File
+#### 📦 Included Postman File
 
-- `APIs/Studios-and-Animes.postman_collection.json`
+- `Postman/Anime Studios.postman_collection.json`
 
-### ⚙️ What It Does
+#### ⚙️ What It Does
 
 This Postman collection allows you to:
 
@@ -149,7 +160,7 @@ This Postman collection allows you to:
   - Proper success or error messages
 - Quickly confirm MongoDB persistence for new, updated, and deleted documents
 
-### 🚀 How to Use It
+#### 🚀 How to Use It
 
 1. **Import the Collection**
    - Open Postman.
@@ -184,7 +195,7 @@ This Postman collection allows you to:
 - Each API route automatically returns structured JSON responses for easier testing.
 - The exported collection is designed to support manual and automated testing within Postman.
 
-## 🧪 Jest Route Tests
+### 🧪 Jest Route Tests
 
 Added basic Jest route tests hitting the _actual running API_ on localhost.
 
